@@ -17,7 +17,9 @@ const createApolloClient = () => {
     ssrMode: typeof window === 'undefined',
     link: new HttpLink({
       uri: 'https://r-men.hasura.app/v1//graphql', // Server URL (must be absolute)
-      //   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+      headers: {
+        'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_KEY,
+      },
     }),
     cache: new InMemoryCache({
       typePolicies: {

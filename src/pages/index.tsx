@@ -1,8 +1,43 @@
 import Head from 'next/head';
 import React from 'react';
 import Link from 'next/link';
+import { VFC } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_USERS } from '../apollo/queries/userQueries';
+import {
+  GetUserIdsDocument,
+  GetUsersDocument,
+  GetUserIdsQuery,
+  GetUsersQueryVariables,
+  useGetUsersQuery,
+  GetUsersQuery,
+} from '../apollo/graphql';
+import { addApolloState, initializeApollo } from '../apollo/apolloClient';
+import { Get_UsersQuery } from '../apollo/graphql.schema';
 
-export default function Home() {
+// export const getStaticProps = async () => {
+//   const apolloClient = initializeApollo();
+
+//   await apolloClient.query<GetUsersQuery, GetUsersQueryVariables>({
+//     query: GetUsersDocument,
+//   });
+//   console.log('ssr + apollo ');
+//   return addApolloState(apolloClient, {
+//     props: {},
+//     revalidate: 1,
+//   });
+// };
+
+const Home: VFC = () => {
+  const { data, error } = useQuery<GetUsersQuery>(GET_USERS, {
+    // fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
+    //fetchPolicy: 'cache-first',
+    //fetchPolicy: 'no-cache',
+  });
+  if (error) {
+    return <div>{error.message}</div>;
+  }
   return (
     <div>
       <Head>
@@ -12,6 +47,13 @@ export default function Home() {
       </Head>
 
       <main className="bg-yellow-100 h-screen">
+        {data?.users.map((user) => {
+          return (
+            <p className="my-1" key={user.id}>
+              {user.name}
+            </p>
+          );
+        })}
         <div className="bg-r-men-img w-full object-contain bg-contain xl:bg-cover pb-14">
           <div className="md:w-1/3 z-10 h-64">
             <div className="grid grid-cols-3 place-content-center h-16 py-5">
@@ -58,6 +100,8 @@ export default function Home() {
           <h1 className="mx-auto text-4xl text-center font-serif">
             カテゴリから探す
           </h1>
+
+          <div>shop一覧</div>
         </div>
         <div className="container bg-gray-400 mx-auto pb-10">
           <h1 className="mx-auto text-4xl text-center font-serif">
@@ -79,4 +123,6 @@ export default function Home() {
       </footer>
     </div>
   );
-}
+};
+
+export default Home;
