@@ -1,0 +1,11 @@
+query GET_USERS($id: uuid_comparison_exp = {}) {
+  shops(where: { id: $id }) {
+    id
+    name
+    phone_number
+    prefecture_id
+    description
+    created_at
+    updated_at
+  }
+}
