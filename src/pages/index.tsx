@@ -1,40 +1,36 @@
 import Head from 'next/head';
 import React from 'react';
 import Link from 'next/link';
+import { GetStaticProps } from 'next';
 import { VFC } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_USERS } from '../apollo/queries/userQueries';
 import {
-  GetUserIdsDocument,
-  GetUsersDocument,
-  GetUserIdsQuery,
-  GetUsersQueryVariables,
-  useGetUsersQuery,
+  GetAreasQuery,
+  GetAreasQueryVariables,
+  GetPrefecturesQuery,
+  GetPrefecturesQueryVariables,
   GetUsersQuery,
+  useGetAreasQuery,
+  useGetPrefecturesQuery,
 } from '../apollo/graphql';
 import { addApolloState, initializeApollo } from '../apollo/apolloClient';
-import { Get_UsersQuery } from '../apollo/graphql.schema';
+import { GET_PREFECTURES } from '../apollo/queries/prefectureQueries';
 
-// export const getStaticProps = async () => {
-//   const apolloClient = initializeApollo();
+export const getStaticProps: GetStaticProps = async () => {
+  const apolloClient = initializeApollo();
 
-//   await apolloClient.query<GetUsersQuery, GetUsersQueryVariables>({
-//     query: GetUsersDocument,
-//   });
-//   console.log('ssr + apollo ');
-//   return addApolloState(apolloClient, {
-//     props: {},
-//     revalidate: 1,
-//   });
-// };
+  await apolloClient.query<GetPrefecturesQuery, GetPrefecturesQueryVariables>({
+    query: GET_PREFECTURES,
+  });
+
+  return addApolloState(apolloClient, {
+    props: {},
+    revalidate: 1,
+  });
+};
 
 const Home: VFC = () => {
-  const { data, error } = useQuery<GetUsersQuery>(GET_USERS, {
-    // fetchPolicy: 'network-only',
-    fetchPolicy: 'cache-and-network',
-    //fetchPolicy: 'cache-first',
-    //fetchPolicy: 'no-cache',
-  });
+  const { data, error } = useGetPrefecturesQuery();
   if (error) {
     return <div>{error.message}</div>;
   }
@@ -47,10 +43,11 @@ const Home: VFC = () => {
       </Head>
 
       <main className="bg-yellow-100 h-screen">
-        {data?.users.map((user) => {
+        {data?.prefectures.map((prefecture) => {
           return (
-            <p className="my-1" key={user.id}>
-              {user.name}
+            <p className="my-1" key={prefecture.id}>
+              {prefecture.name}
+              {prefecture.area?.name}
             </p>
           );
         })}
