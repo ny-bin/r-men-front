@@ -3,36 +3,47 @@ import React from 'react';
 import Link from 'next/link';
 import { GetStaticProps } from 'next';
 import { VFC } from 'react';
-import { useQuery } from '@apollo/client';
+
 import {
-  GetAreasQuery,
-  GetAreasQueryVariables,
+  GetCategoriesQuery,
   GetPrefecturesQuery,
-  GetPrefecturesQueryVariables,
-  GetUsersQuery,
-  useGetAreasQuery,
+  useGetCategoriesQuery,
   useGetPrefecturesQuery,
 } from '../apollo/graphql';
 import { addApolloState, initializeApollo } from '../apollo/apolloClient';
 import { GET_PREFECTURES } from '../apollo/queries/prefectureQueries';
-
-export const getStaticProps: GetStaticProps = async () => {
-  const apolloClient = initializeApollo();
-
-  await apolloClient.query<GetPrefecturesQuery, GetPrefecturesQueryVariables>({
-    query: GET_PREFECTURES,
-  });
-
-  return addApolloState(apolloClient, {
-    props: {},
-    revalidate: 1,
-  });
-};
+import { GET_CATEGORIES } from '../apollo/queries/categoryQueries';
 
 const Home: VFC = () => {
   const { data, error } = useGetPrefecturesQuery();
+  const Tohoku = data?.prefectures.filter(
+    (prefecture) => (prefecture.area?.id.toString() as String) == '4'
+  );
+  const Kanto = data?.prefectures.filter(
+    (prefecture) => (prefecture.area?.id.toString() as String) == '5'
+  );
+  const Chubu = data?.prefectures.filter(
+    (prefecture) => (prefecture.area?.id.toString() as String) == '6'
+  );
+  const Kansai = data?.prefectures.filter(
+    (prefecture) => (prefecture.area?.id.toString() as String) == '7'
+  );
+  const ChuShikoku = data?.prefectures.filter(
+    (prefecture) => (prefecture.area?.id.toString() as String) == '8'
+  );
+  const Kyushu = data?.prefectures.filter(
+    (prefecture) => (prefecture.area?.id.toString() as String) == '9'
+  );
+
+  const categories = useGetCategoriesQuery();
+  const categoryNameList = categories.data;
+  const categoryError = categories.error;
+
   if (error) {
     return <div>{error.message}</div>;
+  }
+  if (categoryError) {
+    return <div>categoryError:{categoryError.message}</div>;
   }
   return (
     <div>
@@ -42,15 +53,7 @@ const Home: VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="bg-yellow-100 h-screen">
-        {data?.prefectures.map((prefecture) => {
-          return (
-            <p className="my-1" key={prefecture.id}>
-              {prefecture.name}
-              {prefecture.area?.name}
-            </p>
-          );
-        })}
+      <main className="bg-yellow-100 h-auto">
         <div className="bg-r-men-img w-full object-contain bg-contain xl:bg-cover pb-14">
           <div className="md:w-1/3 z-10 h-64">
             <div className="grid grid-cols-3 place-content-center h-16 py-5">
@@ -82,7 +85,7 @@ const Home: VFC = () => {
           </div>
         </div>
 
-        <div className="container bg-gray-400 mx-auto py-10">
+        <div className="container mx-auto py-10">
           <h1 className="mx-auto text-4xl text-center font-serif ">
             おすすめから探す
           </h1>
@@ -93,17 +96,100 @@ const Home: VFC = () => {
             <p className="text-center">運営おすすめ</p>
           </div>
         </div>
-        <div className="container bg-gray-400 mx-auto pb-10">
+        <div className="container mx-auto pb-10">
           <h1 className="mx-auto text-4xl text-center font-serif">
             カテゴリから探す
           </h1>
-
-          <div>shop一覧</div>
+          <div className="grid grid-cols-6 h-auto py-5 my-5 w-2/3 mx-auto">
+            {categoryNameList?.categories?.map((category) => {
+              return (
+                <p className="text-center py-2" key={category.id}>
+                  {category.name}
+                </p>
+              );
+            })}
+          </div>
         </div>
-        <div className="container bg-gray-400 mx-auto pb-10">
+        <div className="container mx-auto pb-10">
           <h1 className="mx-auto text-4xl text-center font-serif">
             エリアから探す
           </h1>
+          <div className="mx-auto grid grid-cols-2 place-content-center m-4">
+            <div className="rounded-lg border-solid border-2 border-yellow-200 m-4">
+              <h1 className="text-center text-2xl font-serif py-4 ">
+                北海道・東北
+              </h1>
+              <div className="grid grid-cols-4">
+                {Tohoku?.map((prefecture) => {
+                  return (
+                    <p className="text-center py-2" key={prefecture.id}>
+                      {prefecture.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="rounded-lg border-solid border-2 border-yellow-200 m-4">
+              <h1 className="text-center text-2xl font-serif py-4">関東</h1>
+              <div className="grid grid-cols-4">
+                {Kanto?.map((prefecture) => {
+                  return (
+                    <p className="text-center py-2" key={prefecture.id}>
+                      {prefecture.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="rounded-lg border-solid border-2 border-yellow-200 m-4">
+              <h1 className="text-center text-2xl font-serif py-4">中部</h1>
+              <div className="grid grid-cols-4">
+                {Chubu?.map((prefecture) => {
+                  return (
+                    <p className="text-center py-2" key={prefecture.id}>
+                      {prefecture.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="rounded-lg border-solid border-2 border-yellow-200 m-4">
+              <h1 className="text-center text-2xl font-serif py-4">関西</h1>
+              <div className="grid grid-cols-4">
+                {Kansai?.map((prefecture) => {
+                  return (
+                    <p className="text-center py-2" key={prefecture.id}>
+                      {prefecture.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="rounded-lg border-solid border-2 border-yellow-200 m-4">
+              <h1 className="text-center text-2xl font-serif py-4">中四国</h1>
+              <div className="grid grid-cols-4">
+                {ChuShikoku?.map((prefecture) => {
+                  return (
+                    <p className="text-center py-2" key={prefecture.id}>
+                      {prefecture.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="rounded-lg border-solid border-2 border-yellow-200 m-4">
+              <h1 className="text-center text-2xl font-serif py-4">九州</h1>
+              <div className="grid grid-cols-4">
+                {Kyushu?.map((prefecture) => {
+                  return (
+                    <p className="text-center py-2" key={prefecture.id}>
+                      {prefecture.name}
+                    </p>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 
@@ -120,6 +206,23 @@ const Home: VFC = () => {
       </footer>
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const apolloClient = initializeApollo();
+
+  await apolloClient.query<GetPrefecturesQuery>({
+    query: GET_PREFECTURES,
+  });
+
+  await apolloClient.query<GetCategoriesQuery>({
+    query: GET_CATEGORIES,
+  });
+
+  return addApolloState(apolloClient, {
+    props: {},
+    revalidate: 1,
+  });
 };
 
 export default Home;
