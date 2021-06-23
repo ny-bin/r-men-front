@@ -65,6 +65,236 @@ export type String_Comparison_Exp = {
   _similar?: Maybe<Scalars['String']>;
 };
 
+/** columns and relationships of "areas" */
+export type Areas = {
+  __typename?: 'areas';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  /** An array relationship */
+  prefectures: Array<Prefectures>;
+  /** An aggregate relationship */
+  prefectures_aggregate: Prefectures_Aggregate;
+  updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "areas" */
+export type AreasPrefecturesArgs = {
+  distinct_on?: Maybe<Array<Prefectures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Prefectures_Order_By>>;
+  where?: Maybe<Prefectures_Bool_Exp>;
+};
+
+
+/** columns and relationships of "areas" */
+export type AreasPrefectures_AggregateArgs = {
+  distinct_on?: Maybe<Array<Prefectures_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Prefectures_Order_By>>;
+  where?: Maybe<Prefectures_Bool_Exp>;
+};
+
+/** aggregated selection of "areas" */
+export type Areas_Aggregate = {
+  __typename?: 'areas_aggregate';
+  aggregate?: Maybe<Areas_Aggregate_Fields>;
+  nodes: Array<Areas>;
+};
+
+/** aggregate fields of "areas" */
+export type Areas_Aggregate_Fields = {
+  __typename?: 'areas_aggregate_fields';
+  avg?: Maybe<Areas_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Areas_Max_Fields>;
+  min?: Maybe<Areas_Min_Fields>;
+  stddev?: Maybe<Areas_Stddev_Fields>;
+  stddev_pop?: Maybe<Areas_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Areas_Stddev_Samp_Fields>;
+  sum?: Maybe<Areas_Sum_Fields>;
+  var_pop?: Maybe<Areas_Var_Pop_Fields>;
+  var_samp?: Maybe<Areas_Var_Samp_Fields>;
+  variance?: Maybe<Areas_Variance_Fields>;
+};
+
+
+/** aggregate fields of "areas" */
+export type Areas_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Areas_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Areas_Avg_Fields = {
+  __typename?: 'areas_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "areas". All fields are combined with a logical 'AND'. */
+export type Areas_Bool_Exp = {
+  _and?: Maybe<Array<Areas_Bool_Exp>>;
+  _not?: Maybe<Areas_Bool_Exp>;
+  _or?: Maybe<Array<Areas_Bool_Exp>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  prefectures?: Maybe<Prefectures_Bool_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "areas" */
+export enum Areas_Constraint {
+  /** unique or primary key constraint */
+  AreasPkey = 'areas_pkey'
+}
+
+/** input type for incrementing numeric columns in table "areas" */
+export type Areas_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "areas" */
+export type Areas_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  prefectures?: Maybe<Prefectures_Arr_Rel_Insert_Input>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Areas_Max_Fields = {
+  __typename?: 'areas_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Areas_Min_Fields = {
+  __typename?: 'areas_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "areas" */
+export type Areas_Mutation_Response = {
+  __typename?: 'areas_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Areas>;
+};
+
+/** input type for inserting object relation for remote table "areas" */
+export type Areas_Obj_Rel_Insert_Input = {
+  data: Areas_Insert_Input;
+  /** on conflict condition */
+  on_conflict?: Maybe<Areas_On_Conflict>;
+};
+
+/** on conflict condition type for table "areas" */
+export type Areas_On_Conflict = {
+  constraint: Areas_Constraint;
+  update_columns?: Array<Areas_Update_Column>;
+  where?: Maybe<Areas_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "areas". */
+export type Areas_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  prefectures_aggregate?: Maybe<Prefectures_Aggregate_Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: areas */
+export type Areas_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "areas" */
+export enum Areas_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "areas" */
+export type Areas_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Areas_Stddev_Fields = {
+  __typename?: 'areas_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Areas_Stddev_Pop_Fields = {
+  __typename?: 'areas_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Areas_Stddev_Samp_Fields = {
+  __typename?: 'areas_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Areas_Sum_Fields = {
+  __typename?: 'areas_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "areas" */
+export enum Areas_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Areas_Var_Pop_Fields = {
+  __typename?: 'areas_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Areas_Var_Samp_Fields = {
+  __typename?: 'areas_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Areas_Variance_Fields = {
+  __typename?: 'areas_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
 export type Bigint_Comparison_Exp = {
@@ -341,8 +571,12 @@ export type Likes = {
   __typename?: 'likes';
   created_at: Scalars['timestamptz'];
   id: Scalars['bigint'];
+  /** An object relationship */
+  shop: Shops;
   shop_id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  user: Users;
   user_id: Scalars['uuid'];
 };
 
@@ -376,10 +610,37 @@ export type Likes_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "likes" */
+export type Likes_Aggregate_Order_By = {
+  avg?: Maybe<Likes_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Likes_Max_Order_By>;
+  min?: Maybe<Likes_Min_Order_By>;
+  stddev?: Maybe<Likes_Stddev_Order_By>;
+  stddev_pop?: Maybe<Likes_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Likes_Stddev_Samp_Order_By>;
+  sum?: Maybe<Likes_Sum_Order_By>;
+  var_pop?: Maybe<Likes_Var_Pop_Order_By>;
+  var_samp?: Maybe<Likes_Var_Samp_Order_By>;
+  variance?: Maybe<Likes_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "likes" */
+export type Likes_Arr_Rel_Insert_Input = {
+  data: Array<Likes_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Likes_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Likes_Avg_Fields = {
   __typename?: 'likes_avg_fields';
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "likes" */
+export type Likes_Avg_Order_By = {
+  id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "likes". All fields are combined with a logical 'AND'. */
@@ -389,8 +650,10 @@ export type Likes_Bool_Exp = {
   _or?: Maybe<Array<Likes_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Bigint_Comparison_Exp>;
+  shop?: Maybe<Shops_Bool_Exp>;
   shop_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<Users_Bool_Exp>;
   user_id?: Maybe<Uuid_Comparison_Exp>;
 };
 
@@ -409,8 +672,10 @@ export type Likes_Inc_Input = {
 export type Likes_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['bigint']>;
+  shop?: Maybe<Shops_Obj_Rel_Insert_Input>;
   shop_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<Users_Obj_Rel_Insert_Input>;
   user_id?: Maybe<Scalars['uuid']>;
 };
 
@@ -424,6 +689,15 @@ export type Likes_Max_Fields = {
   user_id?: Maybe<Scalars['uuid']>;
 };
 
+/** order by max() on columns of table "likes" */
+export type Likes_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  shop_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Likes_Min_Fields = {
   __typename?: 'likes_min_fields';
@@ -432,6 +706,15 @@ export type Likes_Min_Fields = {
   shop_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "likes" */
+export type Likes_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  shop_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "likes" */
@@ -454,8 +737,10 @@ export type Likes_On_Conflict = {
 export type Likes_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  shop?: Maybe<Shops_Order_By>;
   shop_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
 };
 
@@ -493,10 +778,20 @@ export type Likes_Stddev_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "likes" */
+export type Likes_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Likes_Stddev_Pop_Fields = {
   __typename?: 'likes_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "likes" */
+export type Likes_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -505,10 +800,20 @@ export type Likes_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_samp() on columns of table "likes" */
+export type Likes_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate sum on columns */
 export type Likes_Sum_Fields = {
   __typename?: 'likes_sum_fields';
   id?: Maybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "likes" */
+export type Likes_Sum_Order_By = {
+  id?: Maybe<Order_By>;
 };
 
 /** update columns of table "likes" */
@@ -531,10 +836,20 @@ export type Likes_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "likes" */
+export type Likes_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Likes_Var_Samp_Fields = {
   __typename?: 'likes_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "likes" */
+export type Likes_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -543,9 +858,18 @@ export type Likes_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by variance() on columns of table "likes" */
+export type Likes_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  /** delete data from the table: "areas" */
+  delete_areas?: Maybe<Areas_Mutation_Response>;
+  /** delete single row from the table: "areas" */
+  delete_areas_by_pk?: Maybe<Areas>;
   /** delete data from the table: "categories" */
   delete_categories?: Maybe<Categories_Mutation_Response>;
   /** delete single row from the table: "categories" */
@@ -582,6 +906,10 @@ export type Mutation_Root = {
   delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
   delete_users_by_pk?: Maybe<Users>;
+  /** insert data into the table: "areas" */
+  insert_areas?: Maybe<Areas_Mutation_Response>;
+  /** insert a single row into the table: "areas" */
+  insert_areas_one?: Maybe<Areas>;
   /** insert data into the table: "categories" */
   insert_categories?: Maybe<Categories_Mutation_Response>;
   /** insert a single row into the table: "categories" */
@@ -618,6 +946,10 @@ export type Mutation_Root = {
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one?: Maybe<Users>;
+  /** update data of the table: "areas" */
+  update_areas?: Maybe<Areas_Mutation_Response>;
+  /** update single row of the table: "areas" */
+  update_areas_by_pk?: Maybe<Areas>;
   /** update data of the table: "categories" */
   update_categories?: Maybe<Categories_Mutation_Response>;
   /** update single row of the table: "categories" */
@@ -654,6 +986,18 @@ export type Mutation_Root = {
   update_users?: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
   update_users_by_pk?: Maybe<Users>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_AreasArgs = {
+  where: Areas_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Areas_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -762,6 +1106,20 @@ export type Mutation_RootDelete_UsersArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Users_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_AreasArgs = {
+  objects: Array<Areas_Insert_Input>;
+  on_conflict?: Maybe<Areas_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Areas_OneArgs = {
+  object: Areas_Insert_Input;
+  on_conflict?: Maybe<Areas_On_Conflict>;
 };
 
 
@@ -888,6 +1246,22 @@ export type Mutation_RootInsert_UsersArgs = {
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict?: Maybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_AreasArgs = {
+  _inc?: Maybe<Areas_Inc_Input>;
+  _set?: Maybe<Areas_Set_Input>;
+  where: Areas_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Areas_By_PkArgs = {
+  _inc?: Maybe<Areas_Inc_Input>;
+  _set?: Maybe<Areas_Set_Input>;
+  pk_columns: Areas_Pk_Columns_Input;
 };
 
 
@@ -1049,6 +1423,9 @@ export enum Order_By {
 /** columns and relationships of "prefectures" */
 export type Prefectures = {
   __typename?: 'prefectures';
+  /** An object relationship */
+  area?: Maybe<Areas>;
+  area_id?: Maybe<Scalars['Int']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -1133,10 +1510,39 @@ export type Prefectures_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "prefectures" */
+export type Prefectures_Aggregate_Order_By = {
+  avg?: Maybe<Prefectures_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Prefectures_Max_Order_By>;
+  min?: Maybe<Prefectures_Min_Order_By>;
+  stddev?: Maybe<Prefectures_Stddev_Order_By>;
+  stddev_pop?: Maybe<Prefectures_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Prefectures_Stddev_Samp_Order_By>;
+  sum?: Maybe<Prefectures_Sum_Order_By>;
+  var_pop?: Maybe<Prefectures_Var_Pop_Order_By>;
+  var_samp?: Maybe<Prefectures_Var_Samp_Order_By>;
+  variance?: Maybe<Prefectures_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "prefectures" */
+export type Prefectures_Arr_Rel_Insert_Input = {
+  data: Array<Prefectures_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Prefectures_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Prefectures_Avg_Fields = {
   __typename?: 'prefectures_avg_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "prefectures" */
+export type Prefectures_Avg_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "prefectures". All fields are combined with a logical 'AND'. */
@@ -1144,6 +1550,8 @@ export type Prefectures_Bool_Exp = {
   _and?: Maybe<Array<Prefectures_Bool_Exp>>;
   _not?: Maybe<Prefectures_Bool_Exp>;
   _or?: Maybe<Array<Prefectures_Bool_Exp>>;
+  area?: Maybe<Areas_Bool_Exp>;
+  area_id?: Maybe<Int_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
@@ -1160,11 +1568,14 @@ export enum Prefectures_Constraint {
 
 /** input type for incrementing numeric columns in table "prefectures" */
 export type Prefectures_Inc_Input = {
+  area_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "prefectures" */
 export type Prefectures_Insert_Input = {
+  area?: Maybe<Areas_Obj_Rel_Insert_Input>;
+  area_id?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -1176,19 +1587,39 @@ export type Prefectures_Insert_Input = {
 /** aggregate max on columns */
 export type Prefectures_Max_Fields = {
   __typename?: 'prefectures_max_fields';
+  area_id?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+/** order by max() on columns of table "prefectures" */
+export type Prefectures_Max_Order_By = {
+  area_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Prefectures_Min_Fields = {
   __typename?: 'prefectures_min_fields';
+  area_id?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "prefectures" */
+export type Prefectures_Min_Order_By = {
+  area_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "prefectures" */
@@ -1216,6 +1647,8 @@ export type Prefectures_On_Conflict = {
 
 /** Ordering options when selecting data from "prefectures". */
 export type Prefectures_Order_By = {
+  area?: Maybe<Areas_Order_By>;
+  area_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -1232,6 +1665,8 @@ export type Prefectures_Pk_Columns_Input = {
 /** select columns of table "prefectures" */
 export enum Prefectures_Select_Column {
   /** column name */
+  AreaId = 'area_id',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
@@ -1243,6 +1678,7 @@ export enum Prefectures_Select_Column {
 
 /** input type for updating data in table "prefectures" */
 export type Prefectures_Set_Input = {
+  area_id?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -1252,29 +1688,59 @@ export type Prefectures_Set_Input = {
 /** aggregate stddev on columns */
 export type Prefectures_Stddev_Fields = {
   __typename?: 'prefectures_stddev_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "prefectures" */
+export type Prefectures_Stddev_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Prefectures_Stddev_Pop_Fields = {
   __typename?: 'prefectures_stddev_pop_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "prefectures" */
+export type Prefectures_Stddev_Pop_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Prefectures_Stddev_Samp_Fields = {
   __typename?: 'prefectures_stddev_samp_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "prefectures" */
+export type Prefectures_Stddev_Samp_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Prefectures_Sum_Fields = {
   __typename?: 'prefectures_sum_fields';
+  area_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "prefectures" */
+export type Prefectures_Sum_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** update columns of table "prefectures" */
 export enum Prefectures_Update_Column {
+  /** column name */
+  AreaId = 'area_id',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1288,38 +1754,65 @@ export enum Prefectures_Update_Column {
 /** aggregate var_pop on columns */
 export type Prefectures_Var_Pop_Fields = {
   __typename?: 'prefectures_var_pop_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "prefectures" */
+export type Prefectures_Var_Pop_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Prefectures_Var_Samp_Fields = {
   __typename?: 'prefectures_var_samp_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "prefectures" */
+export type Prefectures_Var_Samp_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Prefectures_Variance_Fields = {
   __typename?: 'prefectures_variance_fields';
+  area_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "prefectures" */
+export type Prefectures_Variance_Order_By = {
+  area_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "areas" */
+  areas: Array<Areas>;
+  /** fetch aggregated fields from the table: "areas" */
+  areas_aggregate: Areas_Aggregate;
+  /** fetch data from the table: "areas" using primary key columns */
+  areas_by_pk?: Maybe<Areas>;
   /** fetch data from the table: "categories" */
   categories: Array<Categories>;
   /** fetch aggregated fields from the table: "categories" */
   categories_aggregate: Categories_Aggregate;
   /** fetch data from the table: "categories" using primary key columns */
   categories_by_pk?: Maybe<Categories>;
-  /** fetch data from the table: "likes" */
+  /** An array relationship */
   likes: Array<Likes>;
-  /** fetch aggregated fields from the table: "likes" */
+  /** An aggregate relationship */
   likes_aggregate: Likes_Aggregate;
   /** fetch data from the table: "likes" using primary key columns */
   likes_by_pk?: Maybe<Likes>;
-  /** fetch data from the table: "prefectures" */
+  /** An array relationship */
   prefectures: Array<Prefectures>;
-  /** fetch aggregated fields from the table: "prefectures" */
+  /** An aggregate relationship */
   prefectures_aggregate: Prefectures_Aggregate;
   /** fetch data from the table: "prefectures" using primary key columns */
   prefectures_by_pk?: Maybe<Prefectures>;
@@ -1335,9 +1828,9 @@ export type Query_Root = {
   shop_comments_aggregate: Shop_Comments_Aggregate;
   /** fetch data from the table: "shop_comments" using primary key columns */
   shop_comments_by_pk?: Maybe<Shop_Comments>;
-  /** fetch data from the table: "shop_urls" */
+  /** An array relationship */
   shop_urls: Array<Shop_Urls>;
-  /** fetch aggregated fields from the table: "shop_urls" */
+  /** An aggregate relationship */
   shop_urls_aggregate: Shop_Urls_Aggregate;
   /** fetch data from the table: "shop_urls" using primary key columns */
   shop_urls_by_pk?: Maybe<Shop_Urls>;
@@ -1359,6 +1852,29 @@ export type Query_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+};
+
+
+export type Query_RootAreasArgs = {
+  distinct_on?: Maybe<Array<Areas_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Areas_Order_By>>;
+  where?: Maybe<Areas_Bool_Exp>;
+};
+
+
+export type Query_RootAreas_AggregateArgs = {
+  distinct_on?: Maybe<Array<Areas_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Areas_Order_By>>;
+  where?: Maybe<Areas_Bool_Exp>;
+};
+
+
+export type Query_RootAreas_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -2088,6 +2604,8 @@ export type Shop_Urls = {
   __typename?: 'shop_urls';
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
+  /** An object relationship */
+  shop: Shops;
   shop_id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
   url: Scalars['String'];
@@ -2115,6 +2633,20 @@ export type Shop_Urls_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "shop_urls" */
+export type Shop_Urls_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Shop_Urls_Max_Order_By>;
+  min?: Maybe<Shop_Urls_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "shop_urls" */
+export type Shop_Urls_Arr_Rel_Insert_Input = {
+  data: Array<Shop_Urls_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Shop_Urls_On_Conflict>;
+};
+
 /** Boolean expression to filter rows from the table "shop_urls". All fields are combined with a logical 'AND'. */
 export type Shop_Urls_Bool_Exp = {
   _and?: Maybe<Array<Shop_Urls_Bool_Exp>>;
@@ -2122,6 +2654,7 @@ export type Shop_Urls_Bool_Exp = {
   _or?: Maybe<Array<Shop_Urls_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  shop?: Maybe<Shops_Bool_Exp>;
   shop_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   url?: Maybe<String_Comparison_Exp>;
@@ -2137,6 +2670,7 @@ export enum Shop_Urls_Constraint {
 export type Shop_Urls_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  shop?: Maybe<Shops_Obj_Rel_Insert_Input>;
   shop_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
@@ -2152,6 +2686,15 @@ export type Shop_Urls_Max_Fields = {
   url?: Maybe<Scalars['String']>;
 };
 
+/** order by max() on columns of table "shop_urls" */
+export type Shop_Urls_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  shop_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Shop_Urls_Min_Fields = {
   __typename?: 'shop_urls_min_fields';
@@ -2160,6 +2703,15 @@ export type Shop_Urls_Min_Fields = {
   shop_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "shop_urls" */
+export type Shop_Urls_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  shop_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "shop_urls" */
@@ -2182,6 +2734,7 @@ export type Shop_Urls_On_Conflict = {
 export type Shop_Urls_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  shop?: Maybe<Shops_Order_By>;
   shop_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
@@ -2235,6 +2788,10 @@ export type Shops = {
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
   name: Scalars['String'];
   phone_number?: Maybe<Scalars['Int']>;
   /** An object relationship */
@@ -2248,7 +2805,31 @@ export type Shops = {
   shop_comments: Array<Shop_Comments>;
   /** An aggregate relationship */
   shop_comments_aggregate: Shop_Comments_Aggregate;
+  /** An array relationship */
+  shop_urls: Array<Shop_Urls>;
+  /** An aggregate relationship */
+  shop_urls_aggregate: Shop_Urls_Aggregate;
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "shops" */
+export type ShopsLikesArgs = {
+  distinct_on?: Maybe<Array<Likes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Likes_Order_By>>;
+  where?: Maybe<Likes_Bool_Exp>;
+};
+
+
+/** columns and relationships of "shops" */
+export type ShopsLikes_AggregateArgs = {
+  distinct_on?: Maybe<Array<Likes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Likes_Order_By>>;
+  where?: Maybe<Likes_Bool_Exp>;
 };
 
 
@@ -2289,6 +2870,26 @@ export type ShopsShop_Comments_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Shop_Comments_Order_By>>;
   where?: Maybe<Shop_Comments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "shops" */
+export type ShopsShop_UrlsArgs = {
+  distinct_on?: Maybe<Array<Shop_Urls_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Shop_Urls_Order_By>>;
+  where?: Maybe<Shop_Urls_Bool_Exp>;
+};
+
+
+/** columns and relationships of "shops" */
+export type ShopsShop_Urls_AggregateArgs = {
+  distinct_on?: Maybe<Array<Shop_Urls_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Shop_Urls_Order_By>>;
+  where?: Maybe<Shop_Urls_Bool_Exp>;
 };
 
 /** aggregated selection of "shops" */
@@ -2364,12 +2965,14 @@ export type Shops_Bool_Exp = {
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  likes?: Maybe<Likes_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   phone_number?: Maybe<Int_Comparison_Exp>;
   prefecture?: Maybe<Prefectures_Bool_Exp>;
   prefecture_id?: Maybe<Int_Comparison_Exp>;
   shop_categories?: Maybe<Shop_Categories_Bool_Exp>;
   shop_comments?: Maybe<Shop_Comments_Bool_Exp>;
+  shop_urls?: Maybe<Shop_Urls_Bool_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -2390,12 +2993,14 @@ export type Shops_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  likes?: Maybe<Likes_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
   phone_number?: Maybe<Scalars['Int']>;
   prefecture?: Maybe<Prefectures_Obj_Rel_Insert_Input>;
   prefecture_id?: Maybe<Scalars['Int']>;
   shop_categories?: Maybe<Shop_Categories_Arr_Rel_Insert_Input>;
   shop_comments?: Maybe<Shop_Comments_Arr_Rel_Insert_Input>;
+  shop_urls?: Maybe<Shop_Urls_Arr_Rel_Insert_Input>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2473,12 +3078,14 @@ export type Shops_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  likes_aggregate?: Maybe<Likes_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
   phone_number?: Maybe<Order_By>;
   prefecture?: Maybe<Prefectures_Order_By>;
   prefecture_id?: Maybe<Order_By>;
   shop_categories_aggregate?: Maybe<Shop_Categories_Aggregate_Order_By>;
   shop_comments_aggregate?: Maybe<Shop_Comments_Aggregate_Order_By>;
+  shop_urls_aggregate?: Maybe<Shop_Urls_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2627,21 +3234,27 @@ export type Shops_Variance_Order_By = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "areas" */
+  areas: Array<Areas>;
+  /** fetch aggregated fields from the table: "areas" */
+  areas_aggregate: Areas_Aggregate;
+  /** fetch data from the table: "areas" using primary key columns */
+  areas_by_pk?: Maybe<Areas>;
   /** fetch data from the table: "categories" */
   categories: Array<Categories>;
   /** fetch aggregated fields from the table: "categories" */
   categories_aggregate: Categories_Aggregate;
   /** fetch data from the table: "categories" using primary key columns */
   categories_by_pk?: Maybe<Categories>;
-  /** fetch data from the table: "likes" */
+  /** An array relationship */
   likes: Array<Likes>;
-  /** fetch aggregated fields from the table: "likes" */
+  /** An aggregate relationship */
   likes_aggregate: Likes_Aggregate;
   /** fetch data from the table: "likes" using primary key columns */
   likes_by_pk?: Maybe<Likes>;
-  /** fetch data from the table: "prefectures" */
+  /** An array relationship */
   prefectures: Array<Prefectures>;
-  /** fetch aggregated fields from the table: "prefectures" */
+  /** An aggregate relationship */
   prefectures_aggregate: Prefectures_Aggregate;
   /** fetch data from the table: "prefectures" using primary key columns */
   prefectures_by_pk?: Maybe<Prefectures>;
@@ -2657,9 +3270,9 @@ export type Subscription_Root = {
   shop_comments_aggregate: Shop_Comments_Aggregate;
   /** fetch data from the table: "shop_comments" using primary key columns */
   shop_comments_by_pk?: Maybe<Shop_Comments>;
-  /** fetch data from the table: "shop_urls" */
+  /** An array relationship */
   shop_urls: Array<Shop_Urls>;
-  /** fetch aggregated fields from the table: "shop_urls" */
+  /** An aggregate relationship */
   shop_urls_aggregate: Shop_Urls_Aggregate;
   /** fetch data from the table: "shop_urls" using primary key columns */
   shop_urls_by_pk?: Maybe<Shop_Urls>;
@@ -2681,6 +3294,29 @@ export type Subscription_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+};
+
+
+export type Subscription_RootAreasArgs = {
+  distinct_on?: Maybe<Array<Areas_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Areas_Order_By>>;
+  where?: Maybe<Areas_Bool_Exp>;
+};
+
+
+export type Subscription_RootAreas_AggregateArgs = {
+  distinct_on?: Maybe<Array<Areas_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Areas_Order_By>>;
+  where?: Maybe<Areas_Bool_Exp>;
+};
+
+
+export type Subscription_RootAreas_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -3237,6 +3873,10 @@ export type Users = {
   __typename?: 'users';
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
   name: Scalars['String'];
   /** An object relationship */
   prefecture?: Maybe<Prefectures>;
@@ -3250,6 +3890,26 @@ export type Users = {
   user_categories: Array<User_Categories>;
   /** An aggregate relationship */
   user_categories_aggregate: User_Categories_Aggregate;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersLikesArgs = {
+  distinct_on?: Maybe<Array<Likes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Likes_Order_By>>;
+  where?: Maybe<Likes_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersLikes_AggregateArgs = {
+  distinct_on?: Maybe<Array<Likes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Likes_Order_By>>;
+  where?: Maybe<Likes_Bool_Exp>;
 };
 
 
@@ -3362,6 +4022,7 @@ export type Users_Bool_Exp = {
   _or?: Maybe<Array<Users_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  likes?: Maybe<Likes_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   prefecture?: Maybe<Prefectures_Bool_Exp>;
   prefecture_id?: Maybe<Int_Comparison_Exp>;
@@ -3385,6 +4046,7 @@ export type Users_Inc_Input = {
 export type Users_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  likes?: Maybe<Likes_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
   prefecture?: Maybe<Prefectures_Obj_Rel_Insert_Input>;
   prefecture_id?: Maybe<Scalars['Int']>;
@@ -3458,6 +4120,7 @@ export type Users_On_Conflict = {
 export type Users_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  likes_aggregate?: Maybe<Likes_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
   prefecture?: Maybe<Prefectures_Order_By>;
   prefecture_id?: Maybe<Order_By>;
@@ -3599,6 +4262,86 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type GetAreasQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAreasQuery = (
+  { __typename?: 'query_root' }
+  & { areas: Array<(
+    { __typename?: 'areas' }
+    & Pick<Areas, 'id' | 'name'>
+  )> }
+);
+
+export type GetAreasByIdQueryVariables = Exact<{
+  id?: Maybe<Int_Comparison_Exp>;
+}>;
+
+
+export type GetAreasByIdQuery = (
+  { __typename?: 'query_root' }
+  & { areas: Array<(
+    { __typename?: 'areas' }
+    & Pick<Areas, 'id' | 'name'>
+  )> }
+);
+
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = (
+  { __typename?: 'query_root' }
+  & { categories: Array<(
+    { __typename?: 'categories' }
+    & Pick<Categories, 'id' | 'name'>
+  )> }
+);
+
+export type GetPrefecturesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPrefecturesQuery = (
+  { __typename?: 'query_root' }
+  & { prefectures: Array<(
+    { __typename?: 'prefectures' }
+    & Pick<Prefectures, 'id' | 'name'>
+    & { area?: Maybe<(
+      { __typename?: 'areas' }
+      & Pick<Areas, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type GetPrefecturesByIdQueryVariables = Exact<{
+  id?: Maybe<Int_Comparison_Exp>;
+}>;
+
+
+export type GetPrefecturesByIdQuery = (
+  { __typename?: 'query_root' }
+  & { prefectures: Array<(
+    { __typename?: 'prefectures' }
+    & Pick<Prefectures, 'id' | 'name'>
+    & { area?: Maybe<(
+      { __typename?: 'areas' }
+      & Pick<Areas, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type GetPrefecturesByAreaIdQueryVariables = Exact<{
+  area_id?: Maybe<Int_Comparison_Exp>;
+}>;
+
+
+export type GetPrefecturesByAreaIdQuery = (
+  { __typename?: 'query_root' }
+  & { prefectures: Array<(
+    { __typename?: 'prefectures' }
+    & Pick<Prefectures, 'id' | 'name' | 'area_id'>
+  )> }
+);
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3675,6 +4418,228 @@ export type UpdateUserMutation = (
 );
 
 
+export const GetAreasDocument = gql`
+    query GetAreas {
+  areas(order_by: {id: asc}) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAreasQuery__
+ *
+ * To run a query within a React component, call `useGetAreasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAreasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAreasQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAreasQuery(baseOptions?: Apollo.QueryHookOptions<GetAreasQuery, GetAreasQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAreasQuery, GetAreasQueryVariables>(GetAreasDocument, options);
+      }
+export function useGetAreasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAreasQuery, GetAreasQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAreasQuery, GetAreasQueryVariables>(GetAreasDocument, options);
+        }
+export type GetAreasQueryHookResult = ReturnType<typeof useGetAreasQuery>;
+export type GetAreasLazyQueryHookResult = ReturnType<typeof useGetAreasLazyQuery>;
+export type GetAreasQueryResult = Apollo.QueryResult<GetAreasQuery, GetAreasQueryVariables>;
+export const GetAreasByIdDocument = gql`
+    query GetAreasById($id: Int_comparison_exp = {}) {
+  areas(where: {id: $id}) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAreasByIdQuery__
+ *
+ * To run a query within a React component, call `useGetAreasByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAreasByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAreasByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAreasByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetAreasByIdQuery, GetAreasByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAreasByIdQuery, GetAreasByIdQueryVariables>(GetAreasByIdDocument, options);
+      }
+export function useGetAreasByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAreasByIdQuery, GetAreasByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAreasByIdQuery, GetAreasByIdQueryVariables>(GetAreasByIdDocument, options);
+        }
+export type GetAreasByIdQueryHookResult = ReturnType<typeof useGetAreasByIdQuery>;
+export type GetAreasByIdLazyQueryHookResult = ReturnType<typeof useGetAreasByIdLazyQuery>;
+export type GetAreasByIdQueryResult = Apollo.QueryResult<GetAreasByIdQuery, GetAreasByIdQueryVariables>;
+export const GetCategoriesDocument = gql`
+    query GetCategories {
+  categories(order_by: {id: asc}) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetPrefecturesDocument = gql`
+    query GetPrefectures {
+  prefectures(order_by: {area_id: asc}) {
+    id
+    name
+    area {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPrefecturesQuery__
+ *
+ * To run a query within a React component, call `useGetPrefecturesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrefecturesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrefecturesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPrefecturesQuery(baseOptions?: Apollo.QueryHookOptions<GetPrefecturesQuery, GetPrefecturesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPrefecturesQuery, GetPrefecturesQueryVariables>(GetPrefecturesDocument, options);
+      }
+export function useGetPrefecturesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrefecturesQuery, GetPrefecturesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPrefecturesQuery, GetPrefecturesQueryVariables>(GetPrefecturesDocument, options);
+        }
+export type GetPrefecturesQueryHookResult = ReturnType<typeof useGetPrefecturesQuery>;
+export type GetPrefecturesLazyQueryHookResult = ReturnType<typeof useGetPrefecturesLazyQuery>;
+export type GetPrefecturesQueryResult = Apollo.QueryResult<GetPrefecturesQuery, GetPrefecturesQueryVariables>;
+export const GetPrefecturesByIdDocument = gql`
+    query GetPrefecturesById($id: Int_comparison_exp = {}) {
+  prefectures(where: {id: $id}) {
+    id
+    name
+    area {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPrefecturesByIdQuery__
+ *
+ * To run a query within a React component, call `useGetPrefecturesByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrefecturesByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrefecturesByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPrefecturesByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetPrefecturesByIdQuery, GetPrefecturesByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPrefecturesByIdQuery, GetPrefecturesByIdQueryVariables>(GetPrefecturesByIdDocument, options);
+      }
+export function useGetPrefecturesByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrefecturesByIdQuery, GetPrefecturesByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPrefecturesByIdQuery, GetPrefecturesByIdQueryVariables>(GetPrefecturesByIdDocument, options);
+        }
+export type GetPrefecturesByIdQueryHookResult = ReturnType<typeof useGetPrefecturesByIdQuery>;
+export type GetPrefecturesByIdLazyQueryHookResult = ReturnType<typeof useGetPrefecturesByIdLazyQuery>;
+export type GetPrefecturesByIdQueryResult = Apollo.QueryResult<GetPrefecturesByIdQuery, GetPrefecturesByIdQueryVariables>;
+export const GetPrefecturesByAreaIdDocument = gql`
+    query GetPrefecturesByAreaId($area_id: Int_comparison_exp = {}) {
+  prefectures(where: {area_id: $area_id}) {
+    id
+    name
+    area_id
+  }
+}
+    `;
+
+/**
+ * __useGetPrefecturesByAreaIdQuery__
+ *
+ * To run a query within a React component, call `useGetPrefecturesByAreaIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrefecturesByAreaIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrefecturesByAreaIdQuery({
+ *   variables: {
+ *      area_id: // value for 'area_id'
+ *   },
+ * });
+ */
+export function useGetPrefecturesByAreaIdQuery(baseOptions?: Apollo.QueryHookOptions<GetPrefecturesByAreaIdQuery, GetPrefecturesByAreaIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPrefecturesByAreaIdQuery, GetPrefecturesByAreaIdQueryVariables>(GetPrefecturesByAreaIdDocument, options);
+      }
+export function useGetPrefecturesByAreaIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrefecturesByAreaIdQuery, GetPrefecturesByAreaIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPrefecturesByAreaIdQuery, GetPrefecturesByAreaIdQueryVariables>(GetPrefecturesByAreaIdDocument, options);
+        }
+export type GetPrefecturesByAreaIdQueryHookResult = ReturnType<typeof useGetPrefecturesByAreaIdQuery>;
+export type GetPrefecturesByAreaIdLazyQueryHookResult = ReturnType<typeof useGetPrefecturesByAreaIdLazyQuery>;
+export type GetPrefecturesByAreaIdQueryResult = Apollo.QueryResult<GetPrefecturesByAreaIdQuery, GetPrefecturesByAreaIdQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   users(order_by: {created_at: desc}) {
