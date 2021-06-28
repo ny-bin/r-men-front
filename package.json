@@ -15,6 +15,7 @@
     "@heroicons/react": "^1.0.1",
     "autoprefixer": "^10.2.6",
     "cross-fetch": "^3.1.4",
+    "firebase": "^8.6.8",
     "glob-parent": "^6.0.0",
     "graphql": "^15.5.0",
     "next": "11.0.0",
@@ -22,6 +23,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "tailwindcss": "^2.2.2",
+    "universal-cookie": "^4.0.4",
     "ws": "^7.5.0"
   },
   "devDependencies": {
