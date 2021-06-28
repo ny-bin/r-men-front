@@ -4,13 +4,46 @@ import {
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
+  createHttpLink,
 } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { concatPagination } from '@apollo/client/utilities';
 import type { AppProps } from 'next/app';
+import { auth } from '../utils/auth/firebase';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
+let apolloClient: ApolloClient<NormalizedCacheObject>;
+
+const httpLink = createHttpLink({ uri: process.env.HASURA_URL });
+const authLink = setContext(async (_, { headers }) => {
+  let token = '';
+  // 匿名ログインでない、かつidTokenが存在すればidTokenを設定
+  if (!auth.currentUser?.isAnonymous && auth.currentUser) {
+    token = await auth.currentUser.getIdToken();
+  }
+  return token
+    ? {
+        headers: {
+          ...headers,
+          authorization: `Bearer ${token}`,
+        },
+      }
+    : { headers };
+});
+
+// const requestAccessToken = async () => {
+//   if (accessToken) return;
+
+//   const res = await fetch(`${process.env.APP_HOST}/api/session`);
+//   if (res.ok) {
+//     const json = await res.json();
+//     accessToken = json.accessToken;
+//   } else {
+//     accessToken = 'public';
+//   }
+// };
 
 const createApolloClient = () => {
   return new ApolloClient({
@@ -21,15 +54,16 @@ const createApolloClient = () => {
         'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_KEY,
       },
     }),
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            allPosts: concatPagination(),
-          },
-        },
-      },
-    }),
+    cache: new InMemoryCache(),
+    // {
+    //   typePolicies: {
+    //     Query: {
+    //       fields: {
+    //         allPosts: concatPagination(),
+    //       },
+    //     },
+    //   },
+    // }
   });
 };
 
