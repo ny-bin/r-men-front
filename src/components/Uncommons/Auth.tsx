@@ -50,14 +50,14 @@ export const Auth: VFC = () => {
       <button className=" text-blue-500 " onClick={toggleMode}>
         切り替え
       </button>{' '}
-      {/* {user && (
+      {user && (
         <Link href="/">
           <div className="flex items-center cursor-pointer my-3">
-            <ChevronDoubleRightIcon className="h-5 w-5 mx-1 text-blue-500" />
-            <span>to tasks page</span>
+            <span>{user.displayName}</span>
+            <span>{user.uid}</span>
           </div>
         </Link>
-      )} */}
+      )}
     </>
   );
 };

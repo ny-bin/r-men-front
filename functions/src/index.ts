@@ -45,10 +45,10 @@ export const setCustomClaims = functions.auth.user().onCreate(async (user) => {
     await client.mutate({
       variables: {
         id: user.uid,
-        name: user.displayName,
+        name: user.displayName || 'guest',
       },
       mutation: gql`
-        mutation createUser($id: String!, $name: String!) {
+        mutation createUser($id: String, $name: String) {
           insert_users_one(object: { id: $id, name: $name }) {
             id
             name
