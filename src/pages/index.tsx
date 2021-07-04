@@ -38,7 +38,7 @@ const Home: VFC = () => {
                 Login
               </a>
             </Link>
-            <Link href="/">
+            <Link href="/auth/signup">
               <a className="text-gray-700 text-center px-4 py-2 m-2 font-medium">
                 Sign Up
               </a>

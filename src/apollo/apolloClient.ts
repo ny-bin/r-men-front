@@ -22,13 +22,13 @@ const createApolloClient = () => {
       },
     }),
     cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            allPosts: concatPagination(),
-          },
-        },
-      },
+      // typePolicies: {
+      //   Query: {
+      //     fields: {
+      //       allPosts: concatPagination(),
+      //     },
+      //   },
+      // },
     }),
   });
 };
