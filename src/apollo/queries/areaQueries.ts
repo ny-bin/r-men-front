@@ -26,3 +26,18 @@ export const GET_AREAS_BY_ID = gql`
     }
   }
 `;
+
+export const GET_AREAS_JOIN_PREFECTURES = gql`
+  query GetAreasJoinPrefectures {
+    areas(order_by: { id: asc }) {
+      id
+      name
+      prefectures(order_by: { id: asc }) {
+        area_id
+        created_at
+        id
+        name
+      }
+    }
+  }
+`;

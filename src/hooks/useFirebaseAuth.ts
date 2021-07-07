@@ -1,10 +1,11 @@
 import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
 import firebase from '../../firebaseConfig';
 
-export const useFirebaseAuth = () => {
+export const useFirebaseAuth = (isLogin: boolean) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [passwordConf, setPasswordConf] = useState('');
 
   const emailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -14,14 +15,18 @@ export const useFirebaseAuth = () => {
     setPassword(e.target.value);
   }, []);
 
+  const nameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+  }, []);
+
+  const pwConfChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setPasswordConf(e.target.value);
+  }, []);
+
   const resetInput = useCallback(() => {
     setEmail('');
     setPassword('');
   }, []);
-
-  const toggleMode = useCallback(() => {
-    setIsLogin(!isLogin);
-  }, [isLogin]);
 
   const authUser = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -52,7 +57,10 @@ export const useFirebaseAuth = () => {
     pwChange,
     resetInput,
     isLogin,
-    toggleMode,
     authUser,
+    userName,
+    nameChange,
+    passwordConf,
+    pwConfChange,
   };
 };

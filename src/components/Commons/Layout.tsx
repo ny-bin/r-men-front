@@ -18,7 +18,6 @@ export const Layout: VFC<Props> = ({ children, title = 'R-MEN' }: Props) => {
           name="description"
           content="ラーメン専門の検索アプリです。各地域、カテゴリ、ランキング等で絞り込むことができます。"
         />
-        {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
       <Header />
 
