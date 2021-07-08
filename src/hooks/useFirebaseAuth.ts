@@ -33,14 +33,28 @@ export const useFirebaseAuth = (isLogin: boolean) => {
       e.preventDefault();
       if (isLogin) {
         try {
-          await firebase.auth().signInWithEmailAndPassword(email, password);
+          firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              return firebase
+                .auth()
+                .signInWithEmailAndPassword(email, password);
+            });
         } catch (e) {
           alert(e.message);
         }
         resetInput();
       } else {
         try {
-          await firebase.auth().createUserWithEmailAndPassword(email, password);
+          firebase
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              return firebase
+                .auth()
+                .createUserWithEmailAndPassword(email, password);
+            });
         } catch (e) {
           alert(e.message);
         }
