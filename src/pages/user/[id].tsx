@@ -3,41 +3,88 @@ import { GetStaticProps } from 'next';
 import React, { VFC } from 'react';
 import { addApolloState, initializeApollo } from '../../apollo/apolloClient';
 import {
-  GetUserByIdQuery,
-  GetUserByIdQueryResult,
+  GetUserDetailByIdQuery,
   GetUsersQuery,
-  useGetUserByIdQuery,
   Users,
 } from '../../apollo/graphql';
-import { GET_USER_BY_ID, GET_USERS } from '../../apollo/queries/userQueries';
+import {
+  GET_USERS,
+  GET_USER_DETAIL_BY_ID,
+} from '../../apollo/queries/userQueries';
 import { useRouter } from 'next/router';
+import { Layout } from 'src/components/Commons/Layout';
+import Image from 'next/image';
 
 const User: VFC = () => {
+  //URLパスからidの取得
   const router = useRouter();
   const { id } = router.query;
 
+  //idからユーザー情報の取得(queryはキャッシュから使用)
   const {
     data,
   }: {
-    data: GetUserByIdQuery | undefined;
-  } = useQuery(GET_USER_BY_ID, {
+    data: GetUserDetailByIdQuery | undefined;
+  } = useQuery(GET_USER_DETAIL_BY_ID, {
     variables: { id: id },
-    // Setting this value to true will make the component rerender when
-    // the "networkStatus" changes, so we are able to know if it is fetching
-    // more data
-    notifyOnNetworkStatusChange: false,
+    notifyOnNetworkStatusChange: true,
   });
-
-  // const { data, error } = useQuery(GET_USER_BY_ID, {
-  //   variables: { id: id ?? '' },
-  //   // Setting this value to true will make the component rerender when
-  //   // the "networkStatus" changes, so we are able to know if it is fetching
-  //   // more data
-  //   notifyOnNetworkStatusChange: true,
-  // });
-  // const { data, error } = useGetUserByIdQuery({ id: id });
   console.log(data);
-  return <div>{data ? data.users_by_pk?.id : 'null'} test</div>;
+
+  if (!data?.users_by_pk) {
+    return (
+      <Layout title="none-user">
+        <div>該当のユーザーは存在しません</div>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout title="user-page">
+      <div className="pt-20 py-5 text-center text-white mx-auto">
+        <ul className="md:w-1/2 mx-auto">
+          <li className="flex items-center justify-center">
+            <Image
+              src={'/' + data.users_by_pk.img_url ?? '/noimage.jpg'}
+              width={200}
+              height={200}
+              alt="user's image of this page"
+              className="rounded-full"
+            />
+          </li>
+
+          <li className=" text-2xl font-italic text-center text-black">
+            {data.users_by_pk.name}
+          </li>
+        </ul>
+      </div>
+      <div className="grid grid-cols-6 gap-4">
+        <div className="col-start-2 col-span-4 ..."></div>
+        <div className="col-start-1 col-end-3 ..."></div>
+        <div className="col-end-7 col-span-2 ..."></div>
+        <div className="col-start-1 col-end-7 ..."></div>
+      </div>
+
+      <div className="w-full max-w-2xl mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 grid md:grid-cols-3">
+        <div className="py-8">
+          <p>評価したお店数:</p>
+          <p>フォロー:</p>
+          <p> フォロワー: </p>
+          <p> r-men通ランキング: </p>
+        </div>
+
+        <div className="col-span-2 py-8">
+          {data.users_by_pk.self_pr ?? 'prはまだありません'}
+        </div>
+      </div>
+
+      <div className="container mx-auto py-10">
+        <h1 className="mx-auto text-3xl text-center font-serif font-light">
+          コメント一覧
+        </h1>
+      </div>
+    </Layout>
+  );
 };
 
 export const getStaticPaths = async () => {
@@ -58,8 +105,8 @@ export const getStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
 
-  const { data } = await apolloClient.query<GetUserByIdQuery>({
-    query: GET_USER_BY_ID,
+  const { data } = await apolloClient.query<GetUserDetailByIdQuery>({
+    query: GET_USER_DETAIL_BY_ID,
     variables: { id: params?.id ?? '' },
   });
 

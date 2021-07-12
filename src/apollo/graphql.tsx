@@ -3839,6 +3839,7 @@ export type Users = {
   __typename?: 'users';
   created_at: Scalars['timestamptz'];
   id: Scalars['String'];
+  img_url?: Maybe<Scalars['String']>;
   /** An array relationship */
   likes: Array<Likes>;
   /** An aggregate relationship */
@@ -3847,6 +3848,7 @@ export type Users = {
   /** An object relationship */
   prefecture?: Maybe<Prefectures>;
   prefecture_id?: Maybe<Scalars['Int']>;
+  self_pr?: Maybe<Scalars['String']>;
   /** An array relationship */
   shop_comments: Array<ShopComments>;
   /** An aggregate relationship */
@@ -3988,10 +3990,12 @@ export type UsersBoolExp = {
   _or?: Maybe<Array<UsersBoolExp>>;
   created_at?: Maybe<TimestamptzComparisonExp>;
   id?: Maybe<StringComparisonExp>;
+  img_url?: Maybe<StringComparisonExp>;
   likes?: Maybe<LikesBoolExp>;
   name?: Maybe<StringComparisonExp>;
   prefecture?: Maybe<PrefecturesBoolExp>;
   prefecture_id?: Maybe<IntComparisonExp>;
+  self_pr?: Maybe<StringComparisonExp>;
   shop_comments?: Maybe<ShopCommentsBoolExp>;
   updated_at?: Maybe<TimestampComparisonExp>;
   user_categories?: Maybe<UserCategoriesBoolExp>;
@@ -4014,10 +4018,12 @@ export type UsersIncInput = {
 export type UsersInsertInput = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['String']>;
+  img_url?: Maybe<Scalars['String']>;
   likes?: Maybe<LikesArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
   prefecture?: Maybe<PrefecturesObjRelInsertInput>;
   prefecture_id?: Maybe<Scalars['Int']>;
+  self_pr?: Maybe<Scalars['String']>;
   shop_comments?: Maybe<ShopCommentsArrRelInsertInput>;
   updated_at?: Maybe<Scalars['timestamp']>;
   user_categories?: Maybe<UserCategoriesArrRelInsertInput>;
@@ -4028,8 +4034,10 @@ export type UsersMaxFields = {
   __typename?: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['String']>;
+  img_url?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   prefecture_id?: Maybe<Scalars['Int']>;
+  self_pr?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamp']>;
 };
 
@@ -4037,8 +4045,10 @@ export type UsersMaxFields = {
 export type UsersMaxOrderBy = {
   created_at?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  img_url?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   prefecture_id?: Maybe<OrderBy>;
+  self_pr?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
 };
 
@@ -4047,8 +4057,10 @@ export type UsersMinFields = {
   __typename?: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['String']>;
+  img_url?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   prefecture_id?: Maybe<Scalars['Int']>;
+  self_pr?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamp']>;
 };
 
@@ -4056,8 +4068,10 @@ export type UsersMinFields = {
 export type UsersMinOrderBy = {
   created_at?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  img_url?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   prefecture_id?: Maybe<OrderBy>;
+  self_pr?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
 };
 
@@ -4088,10 +4102,12 @@ export type UsersOnConflict = {
 export type UsersOrderBy = {
   created_at?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  img_url?: Maybe<OrderBy>;
   likes_aggregate?: Maybe<LikesAggregateOrderBy>;
   name?: Maybe<OrderBy>;
   prefecture?: Maybe<PrefecturesOrderBy>;
   prefecture_id?: Maybe<OrderBy>;
+  self_pr?: Maybe<OrderBy>;
   shop_comments_aggregate?: Maybe<ShopCommentsAggregateOrderBy>;
   updated_at?: Maybe<OrderBy>;
   user_categories_aggregate?: Maybe<UserCategoriesAggregateOrderBy>;
@@ -4109,9 +4125,13 @@ export enum UsersSelectColumn {
   /** column name */
   ID = 'id',
   /** column name */
+  IMG_URL = 'img_url',
+  /** column name */
   NAME = 'name',
   /** column name */
   PREFECTURE_ID = 'prefecture_id',
+  /** column name */
+  SELF_PR = 'self_pr',
   /** column name */
   UPDATED_AT = 'updated_at'
 }
@@ -4120,8 +4140,10 @@ export enum UsersSelectColumn {
 export type UsersSetInput = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['String']>;
+  img_url?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   prefecture_id?: Maybe<Scalars['Int']>;
+  self_pr?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamp']>;
 };
 
@@ -4176,9 +4198,13 @@ export enum UsersUpdateColumn {
   /** column name */
   ID = 'id',
   /** column name */
+  IMG_URL = 'img_url',
+  /** column name */
   NAME = 'name',
   /** column name */
   PREFECTURE_ID = 'prefecture_id',
+  /** column name */
+  SELF_PR = 'self_pr',
   /** column name */
   UPDATED_AT = 'updated_at'
 }
@@ -4347,16 +4373,25 @@ export type GetUserIdsQuery = (
   )> }
 );
 
-export type GetUserByIdQueryVariables = Exact<{
-  id: Scalars['String'];
+export type GetUserDetailByIdQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+  user_id?: Maybe<StringComparisonExp>;
+  user_id1?: Maybe<StringComparisonExp>;
 }>;
 
 
-export type GetUserByIdQuery = (
+export type GetUserDetailByIdQuery = (
   { __typename?: 'query_root' }
   & { users_by_pk?: Maybe<(
     { __typename?: 'users' }
-    & Pick<Users, 'id' | 'name' | 'created_at'>
+    & Pick<Users, 'id' | 'name' | 'prefecture_id' | 'img_url' | 'self_pr'>
+    & { likes: Array<(
+      { __typename?: 'likes' }
+      & Pick<Likes, 'shop_id'>
+    )>, shop_comments: Array<(
+      { __typename?: 'shop_comments' }
+      & Pick<ShopComments, 'shop_id' | 'content'>
+    )> }
   )> }
 );
 
@@ -4734,43 +4769,54 @@ export function useGetUserIdsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type GetUserIdsQueryHookResult = ReturnType<typeof useGetUserIdsQuery>;
 export type GetUserIdsLazyQueryHookResult = ReturnType<typeof useGetUserIdsLazyQuery>;
 export type GetUserIdsQueryResult = ApolloReactCommon.QueryResult<GetUserIdsQuery, GetUserIdsQueryVariables>;
-export const GetUserByIdDocument = gql`
-    query GetUserById($id: String!) {
+export const GetUserDetailByIdDocument = gql`
+    query GetUserDetailById($id: String = "", $user_id: String_comparison_exp = {}, $user_id1: String_comparison_exp = {}) {
   users_by_pk(id: $id) {
     id
     name
-    created_at
+    prefecture_id
+    img_url
+    self_pr
+    likes(where: {user_id: $user_id1}) {
+      shop_id
+    }
+    shop_comments(where: {user_id: $user_id}) {
+      shop_id
+      content
+    }
   }
 }
     `;
 
 /**
- * __useGetUserByIdQuery__
+ * __useGetUserDetailByIdQuery__
  *
- * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserDetailByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserDetailByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserByIdQuery({
+ * const { data, loading, error } = useGetUserDetailByIdQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      user_id: // value for 'user_id'
+ *      user_id1: // value for 'user_id1'
  *   },
  * });
  */
-export function useGetUserByIdQuery(baseOptions: ApolloReactHooks.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+export function useGetUserDetailByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserDetailByIdQuery, GetUserDetailByIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        return ApolloReactHooks.useQuery<GetUserDetailByIdQuery, GetUserDetailByIdQueryVariables>(GetUserDetailByIdDocument, options);
       }
-export function useGetUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+export function useGetUserDetailByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserDetailByIdQuery, GetUserDetailByIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+          return ApolloReactHooks.useLazyQuery<GetUserDetailByIdQuery, GetUserDetailByIdQueryVariables>(GetUserDetailByIdDocument, options);
         }
-export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
-export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
-export type GetUserByIdQueryResult = ApolloReactCommon.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export type GetUserDetailByIdQueryHookResult = ReturnType<typeof useGetUserDetailByIdQuery>;
+export type GetUserDetailByIdLazyQueryHookResult = ReturnType<typeof useGetUserDetailByIdLazyQuery>;
+export type GetUserDetailByIdQueryResult = ApolloReactCommon.QueryResult<GetUserDetailByIdQuery, GetUserDetailByIdQueryVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($name: String!) {
   insert_users_one(object: {name: $name}) {
