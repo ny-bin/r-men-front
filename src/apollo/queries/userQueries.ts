@@ -9,15 +9,7 @@ export const GET_USERS = gql`
     }
   }
 `;
-// export const GET_USERS_LOCAL = gql`
-//   query GetUsers {
-//     users(order_by: { created_at: desc }) @client {
-//       id
-//       name
-//       created_at
-//     }
-//   }
-// `;
+
 export const GET_USERIDS = gql`
   query GetUserIds {
     users(order_by: { created_at: desc }) {
@@ -25,15 +17,42 @@ export const GET_USERIDS = gql`
     }
   }
 `;
-export const GET_USERBY_ID = gql`
-  query GetUserById($id: String!) {
+
+export const GET_USER_DETAIL_BY_ID = gql`
+  query GetUserDetailById(
+    $id: String = ""
+    $user_id: String_comparison_exp = {}
+    $user_id1: String_comparison_exp = {}
+  ) {
     users_by_pk(id: $id) {
       id
       name
-      created_at
+      prefecture_id
+      img_url
+      self_pr
+      likes(where: { user_id: $user_id1 }) {
+        shop_id
+      }
+      shop_comments(where: { user_id: $user_id }) {
+        shop_id
+        content
+      }
     }
   }
 `;
+
+// export const GET_USER_DETAIL_BY_ID = gql`
+//   query GetUserById($id: String!) {
+//     users_by_pk(id: $id) {
+//       id
+//       name
+//       created_at
+//       prefecture_id
+//       img_url
+//     }
+//   }
+// `;
+
 export const CREATE_USER = gql`
   mutation CreateUser($name: String!) {
     insert_users_one(object: { name: $name }) {
