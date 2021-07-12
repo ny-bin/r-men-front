@@ -4325,23 +4325,6 @@ export type GetPrefecturesByAreaIdQuery = (
   )> }
 );
 
-export type GetShopsByIdQueryVariables = Exact<{
-  prefecture_id?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type GetShopsByIdQuery = (
-  { __typename?: 'query_root' }
-  & { shops: Array<(
-    { __typename?: 'shops' }
-    & Pick<Shops, 'id' | 'name'>
-    & { prefecture?: Maybe<(
-      { __typename?: 'prefectures' }
-      & Pick<Prefectures, 'id' | 'name'>
-    )> }
-  )> }
-);
-
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4681,46 +4664,6 @@ export function useGetPrefecturesByAreaIdLazyQuery(baseOptions?: ApolloReactHook
 export type GetPrefecturesByAreaIdQueryHookResult = ReturnType<typeof useGetPrefecturesByAreaIdQuery>;
 export type GetPrefecturesByAreaIdLazyQueryHookResult = ReturnType<typeof useGetPrefecturesByAreaIdLazyQuery>;
 export type GetPrefecturesByAreaIdQueryResult = ApolloReactCommon.QueryResult<GetPrefecturesByAreaIdQuery, GetPrefecturesByAreaIdQueryVariables>;
-export const GetShopsByIdDocument = gql`
-    query GetShopsById($prefecture_id: Int) {
-  shops(where: {prefecture_id: {_eq: $prefecture_id}}) {
-    id
-    name
-    prefecture {
-      id
-      name
-    }
-  }
-}
-    `;
-
-/**
- * __useGetShopsByIdQuery__
- *
- * To run a query within a React component, call `useGetShopsByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetShopsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetShopsByIdQuery({
- *   variables: {
- *      prefecture_id: // value for 'prefecture_id'
- *   },
- * });
- */
-export function useGetShopsByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetShopsByIdQuery, GetShopsByIdQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<GetShopsByIdQuery, GetShopsByIdQueryVariables>(GetShopsByIdDocument, options);
-      }
-export function useGetShopsByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetShopsByIdQuery, GetShopsByIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<GetShopsByIdQuery, GetShopsByIdQueryVariables>(GetShopsByIdDocument, options);
-        }
-export type GetShopsByIdQueryHookResult = ReturnType<typeof useGetShopsByIdQuery>;
-export type GetShopsByIdLazyQueryHookResult = ReturnType<typeof useGetShopsByIdLazyQuery>;
-export type GetShopsByIdQueryResult = ApolloReactCommon.QueryResult<GetShopsByIdQuery, GetShopsByIdQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   users(order_by: {created_at: desc}) {

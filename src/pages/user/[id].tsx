@@ -16,16 +16,17 @@ const User: VFC = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { loading, error, data, fetchMore, networkStatus } = useQuery(
-    GET_USER_BY_ID,
-    {
-      variables: { id: id },
-      // Setting this value to true will make the component rerender when
-      // the "networkStatus" changes, so we are able to know if it is fetching
-      // more data
-      notifyOnNetworkStatusChange: false,
-    }
-  );
+  const {
+    data,
+  }: {
+    data: GetUserByIdQuery | undefined;
+  } = useQuery(GET_USER_BY_ID, {
+    variables: { id: id },
+    // Setting this value to true will make the component rerender when
+    // the "networkStatus" changes, so we are able to know if it is fetching
+    // more data
+    notifyOnNetworkStatusChange: false,
+  });
 
   // const { data, error } = useQuery(GET_USER_BY_ID, {
   //   variables: { id: id ?? '' },
@@ -36,7 +37,7 @@ const User: VFC = () => {
   // });
   // const { data, error } = useGetUserByIdQuery({ id: id });
   console.log(data);
-  return <div> test</div>;
+  return <div>{data ? data.users_by_pk?.id : 'null'} test</div>;
 };
 
 export const getStaticPaths = async () => {

@@ -9,15 +9,7 @@ export const GET_USERS = gql`
     }
   }
 `;
-// export const GET_USERS_LOCAL = gql`
-//   query GetUsers {
-//     users(order_by: { created_at: desc }) @client {
-//       id
-//       name
-//       created_at
-//     }
-//   }
-// `;
+
 export const GET_USERIDS = gql`
   query GetUserIds {
     users(order_by: { created_at: desc }) {
@@ -25,7 +17,7 @@ export const GET_USERIDS = gql`
     }
   }
 `;
-export const GET_USERBY_ID = gql`
+export const GET_USER_BY_ID = gql`
   query GetUserById($id: String!) {
     users_by_pk(id: $id) {
       id
@@ -34,6 +26,7 @@ export const GET_USERBY_ID = gql`
     }
   }
 `;
+
 export const CREATE_USER = gql`
   mutation CreateUser($name: String!) {
     insert_users_one(object: { name: $name }) {
