@@ -6,8 +6,7 @@ module.exports = {
     {
       'https://r-men.hasura.app/v1/graphql': {
         headers: {
-          'x-hasura-admin-secret':
-            'X3MO64N0HbzUJ5i1yc3LhJggV3DvS9rT6x11rvz5QAGe3D96HzWeETxwd832mYfP',
+          'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_KEY,
         },
       },
     },
