@@ -31,7 +31,7 @@ export const useUserChanged = () => {
             const idTokenResultSnap = await user.getIdTokenResult();
             const hasuraClaimsSnap = idTokenResultSnap.claims[HASURA_TOKEN_KEY];
             if (hasuraClaimsSnap) {
-              cookie.set('token', tokenSnap, { path: '/' });
+              cookie.set('token', tokenSnap, { path: '/', httpOnly: true });
               router.push('/task');
             }
           });

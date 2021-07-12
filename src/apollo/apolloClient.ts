@@ -2,25 +2,35 @@ import { useMemo } from 'react';
 import {
   ApolloClient,
   HttpLink,
+  createHttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
-import { concatPagination } from '@apollo/client/utilities';
+import { setContext } from '@apollo/client/link/context';
 import type { AppProps } from 'next/app';
+import Cookies from 'universal-cookie';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
+const httpLink = createHttpLink({
+  uri: 'https://r-men.hasura.app/v1/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  const cookie = new Cookies();
+  const token = cookie.get('token');
+
+  return token
+    ? { headers: { ...headers, authorization: `Bearer ${token}` } }
+    : { headers };
+});
+
 const createApolloClient = () => {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-      uri: 'https://r-men.hasura.app/v1/graphql', // Server URL (must be absolute)
-      headers: {
-        'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_KEY,
-      },
-    }),
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache({
       // typePolicies: {
       //   Query: {
