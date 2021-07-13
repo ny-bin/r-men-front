@@ -18,6 +18,15 @@ export const GET_USERIDS = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query GetUserById($id: String = "") {
+    users_by_pk(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
 export const GET_USER_DETAIL_BY_ID = gql`
   query GetUserDetailById(
     $id: String = ""
