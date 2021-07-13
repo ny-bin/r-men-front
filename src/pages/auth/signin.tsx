@@ -12,7 +12,7 @@ const SignIn: VFC = () => {
       <h1 className="text-center text-lg font-semibold pt-8 pb-4 tracking-wider">
         ログイン
       </h1>
-      <Login isLogin={true}></Login>
+      <Login></Login>
     </Layout>
   );
 };
