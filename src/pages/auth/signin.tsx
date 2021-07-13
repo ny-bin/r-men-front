@@ -4,18 +4,17 @@ import { VFC } from 'react';
 import Link from 'next/link';
 
 import { Layout } from '../../components/Commons/Layout';
-import { Auth } from '../../components/Uncommons/Auth';
+import { Login } from '../../components/Uncommons/Login';
 
-const SignUp: VFC = () => {
+const SignIn: VFC = () => {
   return (
     <Layout title="signin">
       <h1 className="text-center text-lg font-semibold pt-8 pb-4 tracking-wider">
         ログイン
       </h1>
-      <Auth isLogin={true}></Auth>
-      <div className="h-100">test</div>
+      <Login isLogin={true}></Login>
     </Layout>
   );
 };
 
-export default SignUp;
+export default SignIn;

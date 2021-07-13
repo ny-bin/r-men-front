@@ -2,7 +2,7 @@ import React from 'react';
 import { VFC } from 'react';
 
 import { Layout } from '../../components/Commons/Layout';
-import { Auth } from '../../components/Uncommons/Auth';
+import { Register } from '../../components/Uncommons/Register';
 
 const SignUp: VFC = () => {
   return (
@@ -10,7 +10,7 @@ const SignUp: VFC = () => {
       <h1 className="text-center text-lg font-semibold pt-8 pb-4 tracking-wider">
         新規会員登録
       </h1>
-      <Auth isLogin={false}></Auth>
+      <Register></Register>
     </Layout>
   );
 };

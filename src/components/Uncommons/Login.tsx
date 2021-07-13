@@ -1,61 +1,79 @@
-import { VFC } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useState, VFC } from 'react';
 import React from 'react';
 import Link from 'next/link';
-import { useFirebaseAuth } from '../../hooks/useFirebaseAuth';
 import firebase from '../../../firebaseConfig';
 import { useLogout } from '../../hooks/useLogout';
+import { initializeApollo } from 'src/apollo/apolloClient';
+import { GetUserByIdQuery } from 'src/apollo/graphql';
+import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
+import { loginUserVar } from 'src/apollo/cache';
 
-type Props = {
-  isLogin: boolean;
-};
+export const Login: VFC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-export const Auth: VFC<Props> = (props: Props) => {
+  const emailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }, []);
+
+  const pwChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  }, []);
+
+  const resetInput = useCallback(() => {
+    setEmail('');
+    setPassword('');
+  }, []);
+
+  const LoginAction = async (credential: firebase.auth.UserCredential) => {
+    const client = initializeApollo();
+    // console.log(client);
+    const user = credential.user;
+    console.log(user?.uid);
+    if (user) {
+      const { data } = await client.query<GetUserByIdQuery>({
+        query: GET_USER_BY_ID,
+        variables: {
+          id: user.uid,
+        },
+      });
+      // console.log(data);
+      loginUserVar(data.users_by_pk);
+    }
+  };
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    //ログイン処理
+    try {
+      firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .then(() => {
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((credential) => {
+              //user情報の保存
+              LoginAction(credential);
+            });
+        });
+    } catch (e) {
+      alert(e.message);
+    }
+    resetInput();
+  };
+
   const user = firebase.auth().currentUser;
-  const {
-    email,
-    password,
-    emailChange,
-    pwChange,
-    isLogin,
-    authUser,
-    userName,
-    nameChange,
-    passwordConf,
-    pwConfChange,
-  } = useFirebaseAuth(props.isLogin);
-
   const { logout } = useLogout();
+
   return (
     <>
       <div className="w-full max-w-sm mx-auto">
         <form
-          onSubmit={authUser}
+          onSubmit={handleLogin}
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
         >
-          {!isLogin && (
-            <>
-              <div className="mb-6">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="password"
-                >
-                  UserName
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="userName"
-                  type="UserName"
-                  value={userName}
-                  onChange={nameChange}
-                />
-
-                {/* <p className="text-red-500 text-xs italic">
-            Please choose a password.
-          </p> */}
-              </div>
-            </>
-          )}
-
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -85,46 +103,21 @@ export const Auth: VFC<Props> = (props: Props) => {
               value={password}
               onChange={pwChange}
             />
-
-            {/* <p className="text-red-500 text-xs italic">
-            Please choose a password.
-          </p> */}
           </div>
 
-          {!isLogin && (
-            <>
-              <div className="mb-6">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="password"
-                >
-                  Password(確認)
-                </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="password"
-                  type="password"
-                  value={passwordConf}
-                  onChange={pwConfChange}
-                />
-              </div>
-            </>
-          )}
           <div className="text-center pt-3">
             <button
               disabled={!email || !password}
               type="submit"
               className="disabled:opacity-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-auto rounded focus:outline-none focus:shadow-outline"
             >
-              {isLogin ? 'Login' : 'Register'}
+              Login
             </button>
           </div>
           <div className="text-center">
-            <Link href={isLogin ? '/auth/signup' : '/auth/signin'}>
+            <Link href="/auth/signup">
               <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
-                {isLogin
-                  ? 'アカウントをお持ちでない方はこちら'
-                  : 'アカウントをお持ちの方はこちら'}
+                アカウントをお持ちでない方はこちら
               </a>
             </Link>
           </div>
