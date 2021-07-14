@@ -55,11 +55,13 @@ export const Register: VFC = () => {
               if (user) {
                 userId = user.uid;
               }
-              resetInput();
+
               //mutation入れてユーザーの名前を書き換える？
               // router.push(`/user/${userId}/edit`);
             });
         });
+      resetInput();
+      router.push('/');
     } catch (e) {
       alert(e.message);
     }

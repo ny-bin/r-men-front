@@ -1,12 +1,19 @@
+import { useReactiveVar } from '@apollo/client';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { VFC } from 'react';
-
-import Link from 'next/link';
+import { loginUserVar } from 'src/apollo/cache';
 
 import { Layout } from '../../components/Commons/Layout';
 import { Login } from '../../components/Uncommons/Login';
 
 const SignIn: VFC = () => {
+  const loginUser = useReactiveVar(loginUserVar);
+  const router = useRouter();
+
+  if (loginUser) {
+    router.push(`../user/${loginUser.id}/edit`);
+  }
   return (
     <Layout title="signin">
       <h1 className="text-center text-lg font-semibold pt-8 pb-4 tracking-wider">
