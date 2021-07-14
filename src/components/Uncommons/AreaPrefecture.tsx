@@ -1,14 +1,15 @@
-import { GetStaticProps } from 'next';
+import { ApolloError } from '@apollo/client';
 import React, { VFC } from 'react';
-import { addApolloState, initializeApollo } from '../../apollo/apolloClient';
-import {
-  GetAreasJoinPrefecturesQuery,
-  useGetAreasJoinPrefecturesQuery,
-} from '../../apollo/graphql';
-import { GET_AREAS_JOIN_PREFECTURES } from '../../apollo/queries/areaQueries';
+import { GetAreasJoinPrefecturesQuery } from '../../apollo/graphql';
 
-export const AreaPrefecture: VFC = () => {
-  const { data, error } = useGetAreasJoinPrefecturesQuery();
+type Props = {
+  data: GetAreasJoinPrefecturesQuery | undefined;
+  error: ApolloError | undefined;
+};
+
+export const AreaPrefecture: VFC<Props> = (props) => {
+  const data = props.data;
+  const error = props.error;
 
   if (error) {
     <div>error: {console.log(error.message)}</div>;
@@ -47,17 +48,4 @@ export const AreaPrefecture: VFC = () => {
       </div>
     </div>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const apolloClient = initializeApollo();
-
-  await apolloClient.query<GetAreasJoinPrefecturesQuery>({
-    query: GET_AREAS_JOIN_PREFECTURES,
-  });
-
-  return addApolloState(apolloClient, {
-    props: {},
-    revalidate: 1,
-  });
 };

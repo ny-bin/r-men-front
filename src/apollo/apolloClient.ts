@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import {
   ApolloClient,
   createHttpLink,
-  InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -10,6 +9,7 @@ import type { AppProps } from 'next/app';
 import Cookies from 'universal-cookie';
 import merge from 'deepmerge';
 import isEqual from 'lodash.isequal';
+import { cache } from './cache';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -32,15 +32,7 @@ const createApolloClient = () => {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache({
-      // typePolicies: {
-      //   Query: {
-      //     fields: {
-      //       allPosts: concatPagination(),
-      //     },
-      //   },
-      // },
-    }),
+    cache: cache,
   });
 };
 
