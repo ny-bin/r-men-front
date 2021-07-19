@@ -55,3 +55,17 @@ export const GET_SHOPS = gql`
     }
   }
 `;
+export const GET_SHOPS_BY_PREFECTURE = gql`
+  query GetShopsByPrefecture($prefecture_id: Int_comparison_exp = {}) {
+    shops(where: { prefecture_id: $prefecture_id }) {
+      id
+      name
+      shop_categories {
+        category {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
