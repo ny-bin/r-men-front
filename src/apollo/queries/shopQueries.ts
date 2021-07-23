@@ -43,7 +43,7 @@ export const GET_SHOPIDS = gql`
 
 export const GET_SHOPS = gql`
   query GetShops($prefecture_id: Int_comparison_exp = {}) {
-    shops(where: { prefecture_id: $prefecture_id }, offset: 10) {
+    shops(where: { prefecture_id: $prefecture_id }) {
       name
       id
       shop_categories {
@@ -56,8 +56,16 @@ export const GET_SHOPS = gql`
   }
 `;
 export const GET_SHOPS_BY_PREFECTURE = gql`
-  query GetShopsByPrefecture($prefecture_id: Int_comparison_exp = {}) {
-    shops(where: { prefecture_id: $prefecture_id }) {
+  query GetShopsByPrefecture(
+    $prefecture_id: Int_comparison_exp = {}
+    $offset: Int = 0
+    $limit: Int = 0
+  ) {
+    shops(
+      where: { prefecture_id: $prefecture_id }
+      offset: $offset
+      limit: $limit
+    ) {
       id
       name
       shop_categories {
