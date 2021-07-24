@@ -4321,6 +4321,17 @@ export type GetPrefecturesQuery = (
   )> }
 );
 
+export type GetPrefecturesIdFirst5QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPrefecturesIdFirst5Query = (
+  { __typename?: 'query_root' }
+  & { prefectures: Array<(
+    { __typename?: 'prefectures' }
+    & Pick<Prefectures, 'id'>
+  )> }
+);
+
 export type GetPrefecturesByIdQueryVariables = Exact<{
   id?: Maybe<IntComparisonExp>;
 }>;
@@ -4724,6 +4735,40 @@ export function useGetPrefecturesLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetPrefecturesQueryHookResult = ReturnType<typeof useGetPrefecturesQuery>;
 export type GetPrefecturesLazyQueryHookResult = ReturnType<typeof useGetPrefecturesLazyQuery>;
 export type GetPrefecturesQueryResult = ApolloReactCommon.QueryResult<GetPrefecturesQuery, GetPrefecturesQueryVariables>;
+export const GetPrefecturesIdFirst5Document = gql`
+    query GetPrefecturesIdFirst5 {
+  prefectures(limit: 5, order_by: {area_id: asc}) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetPrefecturesIdFirst5Query__
+ *
+ * To run a query within a React component, call `useGetPrefecturesIdFirst5Query` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrefecturesIdFirst5Query` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrefecturesIdFirst5Query({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPrefecturesIdFirst5Query(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPrefecturesIdFirst5Query, GetPrefecturesIdFirst5QueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GetPrefecturesIdFirst5Query, GetPrefecturesIdFirst5QueryVariables>(GetPrefecturesIdFirst5Document, options);
+      }
+export function useGetPrefecturesIdFirst5LazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPrefecturesIdFirst5Query, GetPrefecturesIdFirst5QueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GetPrefecturesIdFirst5Query, GetPrefecturesIdFirst5QueryVariables>(GetPrefecturesIdFirst5Document, options);
+        }
+export type GetPrefecturesIdFirst5QueryHookResult = ReturnType<typeof useGetPrefecturesIdFirst5Query>;
+export type GetPrefecturesIdFirst5LazyQueryHookResult = ReturnType<typeof useGetPrefecturesIdFirst5LazyQuery>;
+export type GetPrefecturesIdFirst5QueryResult = ApolloReactCommon.QueryResult<GetPrefecturesIdFirst5Query, GetPrefecturesIdFirst5QueryVariables>;
 export const GetPrefecturesByIdDocument = gql`
     query GetPrefecturesById($id: Int_comparison_exp = {}) {
   prefectures(where: {id: $id}) {
@@ -4863,7 +4908,7 @@ export type GetShopsDetailByIdLazyQueryHookResult = ReturnType<typeof useGetShop
 export type GetShopsDetailByIdQueryResult = ApolloReactCommon.QueryResult<GetShopsDetailByIdQuery, GetShopsDetailByIdQueryVariables>;
 export const GetShopIdsDocument = gql`
     query GetShopIds {
-  shops(order_by: {created_at: desc}) {
+  shops(limit: 5, order_by: {created_at: desc}) {
     id
   }
 }

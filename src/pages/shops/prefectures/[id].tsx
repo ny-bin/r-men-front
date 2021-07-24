@@ -3,6 +3,7 @@ import { GetStaticProps } from 'next';
 import React, { useEffect, useState, VFC } from 'react';
 import { addApolloState, initializeApollo } from '../../../apollo/apolloClient';
 import {
+  GetPrefecturesIdFirst5Query,
   GetPrefecturesQuery,
   GetShopsByPrefectureQuery,
   useGetShopsByPrefectureQuery,
@@ -11,7 +12,10 @@ import { useRouter } from 'next/router';
 import { Layout } from 'src/components/Commons/Layout';
 import { loginUserVar } from 'src/apollo/cache';
 import { GET_SHOPS_BY_PREFECTURE } from 'src/apollo/queries/shopQueries';
-import { GET_PREFECTURES } from 'src/apollo/queries/prefectureQueries';
+import {
+  GET_PREFECTURES,
+  GET_PREFECTURES_ID_FIRST5,
+} from 'src/apollo/queries/prefectureQueries';
 
 const Shop: VFC = () => {
   const router = useRouter();
@@ -111,8 +115,8 @@ const Shop: VFC = () => {
 
 export const getStaticPaths = async () => {
   const apolloClient = initializeApollo();
-  const { data } = await apolloClient.query<GetPrefecturesQuery>({
-    query: GET_PREFECTURES,
+  const { data } = await apolloClient.query<GetPrefecturesIdFirst5Query>({
+    query: GET_PREFECTURES_ID_FIRST5,
   });
   const paths = data.prefectures.map((prefecture) => {
     return { params: { id: prefecture.id.toString() } };
@@ -132,9 +136,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     variables: { prefecture_id: { _eq: params?.id ?? '' } },
   });
 
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
   return addApolloState(apolloClient, {
     props: { shop: data },
-    revalidate: 10,
+    revalidate: 60 * 60,
   });
 };
 

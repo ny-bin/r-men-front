@@ -35,7 +35,7 @@ export const GET_SHOPS_DETAIL_BY_ID = gql`
 
 export const GET_SHOPIDS = gql`
   query GetShopIds {
-    shops(order_by: { created_at: desc }) {
+    shops(limit: 5, order_by: { created_at: desc }) {
       id
     }
   }
