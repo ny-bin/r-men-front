@@ -12,10 +12,7 @@ import { useRouter } from 'next/router';
 import { Layout } from 'src/components/Commons/Layout';
 import { loginUserVar } from 'src/apollo/cache';
 import { GET_SHOPS_BY_PREFECTURE } from 'src/apollo/queries/shopQueries';
-import {
-  GET_PREFECTURES,
-  GET_PREFECTURES_ID_FIRST5,
-} from 'src/apollo/queries/prefectureQueries';
+import { GET_PREFECTURES_ID_FIRST5 } from 'src/apollo/queries/prefectureQueries';
 
 const Shop: VFC = () => {
   const router = useRouter();
@@ -46,15 +43,20 @@ const Shop: VFC = () => {
     <>loading</>;
   }
 
-  useEffect(() => {
-    if (data) {
-      setShops(data.shops);
-    }
-  }, []);
+  if (data) {
+    useEffect(() => {
+      setShops((prev) => {
+        let getShops: GetShopsByPrefectureQuery['shops'] = [];
+        if (data) {
+          getShops = data.shops;
+        }
+        return [...prev, ...getShops];
+      });
+    }, []);
+  }
 
   const handleMoreFetch = async () => {
-    console.log('data get start');
-    let fetchMoredata = await fetchMore({
+    let { data, loading, error } = await fetchMore({
       variables: {
         offset: offset,
         limit: 10,
@@ -65,10 +67,12 @@ const Shop: VFC = () => {
       return num + 10;
     });
 
-    setShops(fetchMoredata.data.shops);
-    if (fetchMoredata.data.shops) {
-      setShops(fetchMoredata.data.shops);
-      console.log(fetchMoredata);
+    if (data) {
+      setShops((prev) => {
+        let getShops: GetShopsByPrefectureQuery['shops'] = [];
+        getShops = data.shops;
+        return [...getShops];
+      });
     }
   };
 
@@ -82,7 +86,7 @@ const Shop: VFC = () => {
     });
 
     setOffset((num) => {
-      return num + 10;
+      return num - 10;
     });
 
     setShops(fetchMoredata.data.shops);
@@ -136,15 +140,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     variables: { prefecture_id: { _eq: params?.id ?? '' } },
   });
 
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+  // if (!data) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
 
   return addApolloState(apolloClient, {
     props: { shop: data },
-    revalidate: 60 * 60,
+    revalidate: 60,
   });
 };
 
