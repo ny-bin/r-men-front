@@ -13,6 +13,7 @@ import { Layout } from 'src/components/Commons/Layout';
 import { loginUserVar } from 'src/apollo/cache';
 import { GET_SHOPS_BY_PREFECTURE } from 'src/apollo/queries/shopQueries';
 import { GET_PREFECTURES_ID_FIRST5 } from 'src/apollo/queries/prefectureQueries';
+import { NetworkStatus } from '@apollo/client';
 
 const Shop: VFC = () => {
   const router = useRouter();
@@ -28,73 +29,75 @@ const Shop: VFC = () => {
   }
 
   const [offset, setOffset] = useState(10);
-  const [shops, setShops] = useState<GetShopsByPrefectureQuery['shops']>([]);
+  const [shopsData, setShopsData] = useState<GetShopsByPrefectureQuery>();
+
+  const { data, loading, fetchMore, networkStatus, error } = useQuery(
+    GET_SHOPS_BY_PREFECTURE,
+    {
+      variables: {
+        prefecture_id: { _eq: prefecture_id },
+        offset: 0,
+        limit: 10,
+      },
+      notifyOnNetworkStatusChange: true,
+      onCompleted: setShopsData,
+    }
+  );
+  if (networkStatus === NetworkStatus.refetch) return <>Refetching!</>;
+  if (loading) return <>loading...</>;
+  if (error) return <>error...</>;
+
+  // useEffect(() => {
+  //   setShops((prev) => {
+  //     let getShops: GetShopsByPrefectureQuery['shops'] = [];
+  //     if (data) {
+  //       getShops = data?.shops;
+  //     }
+  //     return [...prev, ...getShops];
+  //   });
+  // }, []);
+
+  // const handleMoreFetch = async () => {
+  //   let { data, loading, error } = await fetchMore({
+  //     variables: {
+  //       offset: offset,
+  //       limit: 10,
+  //     },
+  //   });
+
+  //   setOffset((num) => {
+  //     return num + 10;
+  //   });
+
+  //   if (!loading) {
+  //     setShops((prev) => {
+  //       let getShops: GetShopsByPrefectureQuery['shops'] = [];
+  //       getShops = data.shops;
+  //       return [...getShops];
+  //     });
+  //   }
+  // };
+
+  // const handleBack = async () => {
+  //   console.log('data get start');
+  //   let fetchMoredata = await fetchMore({
+  //     variables: {
+  //       offset: offset,
+  //       limit: 10,
+  //     },
+  //   });
+
+  //   setOffset((num) => {
+  //     return num - 10;
+  //   });
+
+  //   setShops(fetchMoredata.data.shops);
+  //   if (fetchMoredata.data.shops) {
+  //     setShops(fetchMoredata.data.shops);
+  //   }
+  // };
+
   //idから店舗情報の取得(queryはキャッシュから使用)
-  const { data, loading, fetchMore } = useGetShopsByPrefectureQuery({
-    variables: {
-      prefecture_id: { _eq: prefecture_id },
-      offset: 0,
-      limit: 10,
-    },
-    notifyOnNetworkStatusChange: true,
-  });
-
-  if (loading) {
-    <>loading</>;
-  }
-
-  if (data) {
-    useEffect(() => {
-      setShops((prev) => {
-        let getShops: GetShopsByPrefectureQuery['shops'] = [];
-        if (data) {
-          getShops = data.shops;
-        }
-        return [...prev, ...getShops];
-      });
-    }, []);
-  }
-
-  const handleMoreFetch = async () => {
-    let { data, loading, error } = await fetchMore({
-      variables: {
-        offset: offset,
-        limit: 10,
-      },
-    });
-
-    setOffset((num) => {
-      return num + 10;
-    });
-
-    if (data) {
-      setShops((prev) => {
-        let getShops: GetShopsByPrefectureQuery['shops'] = [];
-        getShops = data.shops;
-        return [...getShops];
-      });
-    }
-  };
-
-  const handleBack = async () => {
-    console.log('data get start');
-    let fetchMoredata = await fetchMore({
-      variables: {
-        offset: offset,
-        limit: 10,
-      },
-    });
-
-    setOffset((num) => {
-      return num - 10;
-    });
-
-    setShops(fetchMoredata.data.shops);
-    if (fetchMoredata.data.shops) {
-      setShops(fetchMoredata.data.shops);
-      console.log(fetchMoredata);
-    }
-  };
 
   // if (!loginUser) {
   //   return (
@@ -107,12 +110,12 @@ const Shop: VFC = () => {
   return (
     <Layout title="shop-page">
       <div>
-        {shops?.map((shop) => {
+        {shopsData?.shops?.map((shop) => {
           return <p key={shop.id}>{shop.name}</p>;
         })}
       </div>
-      <button onClick={handleMoreFetch}>進む</button>
-      <button onClick={handleBack}>戻る</button>
+      {/* <button onClick={handleMoreFetch}>進む</button>
+        <button onClick={handleBack}>戻る</button> */}
     </Layout>
   );
 };
@@ -134,17 +137,18 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
+  console.log(params);
 
   const { data } = await apolloClient.query<GetShopsByPrefectureQuery>({
     query: GET_SHOPS_BY_PREFECTURE,
     variables: { prefecture_id: { _eq: params?.id ?? '' } },
   });
 
-  // if (!data) {
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
 
   return addApolloState(apolloClient, {
     props: { shop: data },
