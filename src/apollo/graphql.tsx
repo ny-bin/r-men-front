@@ -4440,13 +4440,25 @@ export type GetShopsByPrefectureQuery = (
   { __typename?: 'query_root' }
   & { shops: Array<(
     { __typename?: 'shops' }
-    & Pick<Shops, 'id' | 'name'>
+    & Pick<Shops, 'id' | 'name' | 'description'>
     & { shop_categories: Array<(
       { __typename?: 'shop_categories' }
       & { category: (
         { __typename?: 'categories' }
         & Pick<Categories, 'id' | 'name'>
       ) }
+    )>, shop_urls: Array<(
+      { __typename?: 'shop_urls' }
+      & Pick<ShopUrls, 'url'>
+    )>, likes_aggregate: (
+      { __typename?: 'likes_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'likes_aggregate_fields' }
+        & Pick<LikesAggregateFields, 'count'>
+      )> }
+    ), shop_comments: Array<(
+      { __typename?: 'shop_comments' }
+      & Pick<ShopComments, 'shop_id'>
     )> }
   )> }
 );
@@ -4992,6 +5004,18 @@ export const GetShopsByPrefectureDocument = gql`
         id
         name
       }
+    }
+    description
+    shop_urls {
+      url
+    }
+    likes_aggregate {
+      aggregate {
+        count
+      }
+    }
+    shop_comments {
+      shop_id
     }
   }
 }

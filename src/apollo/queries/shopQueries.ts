@@ -74,6 +74,23 @@ export const GET_SHOPS_BY_PREFECTURE = gql`
           name
         }
       }
+      description
+      shop_urls {
+        url
+      }
+      likes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      shop_comments {
+        shop_id
+      }
     }
   }
 `;
+// shop_comments_aggregate {
+//   aggregate {
+//     count
+//   }
+// }

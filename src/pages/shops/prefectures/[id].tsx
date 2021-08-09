@@ -1,6 +1,8 @@
 import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
 import { GetStaticProps } from 'next';
 import React, { useState, VFC } from 'react';
+import Image from 'next/image';
+
 import { addApolloState, initializeApollo } from '../../../apollo/apolloClient';
 import {
   GetPrefecturesIdFirst5Query,
@@ -63,14 +65,34 @@ const Shop: VFC = () => {
     );
   }
 
+  console.log(data);
   return (
     <Layout title="shop-page">
-      <div>
+      <div className="pt-4 ">
         {data &&
           data?.shops?.map((shop) => {
-            return <p key={shop.id}>{shop.name}</p>;
+            return (
+              <>
+                <div className="bg-white sm:w-1/3 w-2/3 h-auto mb-4 mx-auto">
+                  <div className="w-full max-w-2xlbg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 md:grid md:grid-cols-6">
+                    <div className="col-span-2">
+                      <Image
+                        src={'/noimage.jpg'}
+                        width={100}
+                        height={100}
+                        alt="user's image of this page"
+                      />
+                    </div>
+
+                    <div className="col-span-4 py-8">{shop.name}</div>
+                  </div>
+                </div>
+              </>
+            );
           })}
       </div>
+
+      <div className=""></div>
       <button onClick={handleMoreFetch}>進む</button>
     </Layout>
   );
