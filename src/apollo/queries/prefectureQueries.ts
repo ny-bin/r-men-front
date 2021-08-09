@@ -13,6 +13,14 @@ export const GET_PREFECTURES = gql`
   }
 `;
 
+export const GET_PREFECTURES_ID_FIRST5 = gql`
+  query GetPrefecturesIdFirst5 {
+    prefectures(limit: 5, order_by: { area_id: asc }) {
+      id
+    }
+  }
+`;
+
 // export const GET_PREFECTURES_LOCAL = gql`
 //   query GetPrefectures {
 //     prefectures(order_by: { area_id: asc }) @client {

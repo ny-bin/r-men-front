@@ -17,17 +17,21 @@ import { GET_CATEGORIES } from '../apollo/queries/categoryQueries';
 import { Footer } from '../components/Commons/Footer';
 import { AreaPrefecture } from '../components/Uncommons/AreaPrefecture';
 import { GET_AREAS_JOIN_PREFECTURES } from 'src/apollo/queries/areaQueries';
+import { ApolloQueryResult } from '@apollo/client';
 
-const Home: VFC = () => {
-  const categories = useGetCategoriesQuery();
+type Props = {
+  categories: ApolloQueryResult<GetCategoriesQuery>;
+  areas: ApolloQueryResult<GetAreasJoinPrefecturesQuery>;
+};
+
+const Home: VFC<Props> = (props: Props) => {
+  // const categories = useGetCategoriesQuery();
+  const categories = props.categories;
   const categoryNameList = categories.data;
   const categoryError = categories.error;
 
-  const areas = useGetAreasJoinPrefecturesQuery();
+  const areas = props.areas;
 
-  // if (error) {
-  //   return <div>{error.message}</div>;
-  // }
   if (categoryError) {
     return <div>categoryError:{categoryError.message}</div>;
   }
@@ -108,17 +112,17 @@ const Home: VFC = () => {
 export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
 
-  await apolloClient.query<GetCategoriesQuery>({
+  const categories = await apolloClient.query<GetCategoriesQuery>({
     query: GET_CATEGORIES,
   });
 
-  await apolloClient.query<GetAreasJoinPrefecturesQuery>({
+  const areas = await apolloClient.query<GetAreasJoinPrefecturesQuery>({
     query: GET_AREAS_JOIN_PREFECTURES,
   });
 
   return addApolloState(apolloClient, {
-    props: {},
-    revalidate: 1,
+    props: { categories: categories, areas: areas },
+    revalidate: false,
   });
 };
 

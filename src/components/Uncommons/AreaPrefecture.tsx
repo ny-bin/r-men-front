@@ -1,6 +1,7 @@
 import { ApolloError } from '@apollo/client';
 import React, { VFC } from 'react';
 import { GetAreasJoinPrefecturesQuery } from '../../apollo/graphql';
+import Link from 'next/link';
 
 type Props = {
   data: GetAreasJoinPrefecturesQuery | undefined;
@@ -33,9 +34,12 @@ export const AreaPrefecture: VFC<Props> = (props) => {
                 <div className="grid grid-cols-4">
                   {area?.prefectures.map((prefecture) => {
                     return (
-                      <p className="text-center py-2" key={prefecture.id}>
-                        {prefecture.name}
-                      </p>
+                      <Link
+                        href={`/shops/prefectures/${prefecture.id}`}
+                        key={prefecture.id}
+                      >
+                        <a className="text-center py-2">{prefecture.name}</a>
+                      </Link>
                     );
                   })}
                 </div>
