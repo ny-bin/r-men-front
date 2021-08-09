@@ -1,13 +1,10 @@
 import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
 import { GetStaticProps } from 'next';
-import React, { useEffect, useState, VFC } from 'react';
+import React, { useState, VFC } from 'react';
 import { addApolloState, initializeApollo } from '../../../apollo/apolloClient';
 import {
   GetPrefecturesIdFirst5Query,
-  GetPrefecturesQuery,
   GetShopsByPrefectureQuery,
-  GetShopsByPrefectureQueryResult,
-  useGetShopsByPrefectureQuery,
 } from '../../../apollo/graphql';
 import { useRouter } from 'next/router';
 import { Layout } from 'src/components/Commons/Layout';
@@ -30,7 +27,6 @@ const Shop: VFC = () => {
   }
 
   const [offset, setOffset] = useState(10);
-  const [shopsData, setShopsData] = useState<GetShopsByPrefectureQuery>();
 
   const { data, loading, fetchMore, networkStatus, error } =
     useQuery<GetShopsByPrefectureQuery>(GET_SHOPS_BY_PREFECTURE, {
@@ -41,19 +37,10 @@ const Shop: VFC = () => {
       },
       notifyOnNetworkStatusChange: true,
     });
+
   if (networkStatus === NetworkStatus.refetch) return <>Refetching!</>;
   if (loading) return <>loading...</>;
   if (error) return <>error...</>;
-
-  // useEffect(() => {
-  //   setShops((prev) => {
-  //     let getShops: GetShopsByPrefectureQuery['shops'] = [];
-  //     if (data) {
-  //       getShops = data?.shops;
-  //     }
-  //     return [...prev, ...getShops];
-  //   });
-  // }, []);
 
   const handleMoreFetch = async () => {
     await fetchMore({
@@ -68,35 +55,14 @@ const Shop: VFC = () => {
     });
   };
 
-  // const handleBack = async () => {
-  //   console.log('data get start');
-  //   let fetchMoredata = await fetchMore({
-  //     variables: {
-  //       offset: offset,
-  //       limit: 10,
-  //     },
-  //   });
+  if (!loginUser) {
+    return (
+      <Layout title="shop-page">
+        <div>このページはログインしたユーザーのみ観覧できます</div>
+      </Layout>
+    );
+  }
 
-  //   setOffset((num) => {
-  //     return num - 10;
-  //   });
-
-  //   setShops(fetchMoredata.data.shops);
-  //   if (fetchMoredata.data.shops) {
-  //     setShops(fetchMoredata.data.shops);
-  //   }
-  // };
-
-  //idから店舗情報の取得(queryはキャッシュから使用)
-
-  // if (!loginUser) {
-  //   return (
-  //     <Layout title="shop-page">
-  //       <div>このページはログインしたユーザーのみ観覧できます</div>
-  //     </Layout>
-  //   );
-  // }
-  console.log(data?.shops);
   return (
     <Layout title="shop-page">
       <div>
@@ -106,8 +72,6 @@ const Shop: VFC = () => {
           })}
       </div>
       <button onClick={handleMoreFetch}>進む</button>
-      {/* <button onClick={handleMoreFetch}>進む</button> */}
-      {/* <button onClick={handleBack}>戻る</button> */}
     </Layout>
   );
 };
@@ -129,16 +93,6 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
-  // const { data } = await apolloClient.query<GetShopsByPrefectureQuery>({
-  //   query: GET_SHOPS_BY_PREFECTURE,
-  //   variables: { prefecture_id: { _eq: params?.id ?? '' } },
-  // });
-
-  // if (!data) {
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
 
   return addApolloState(apolloClient, {
     props: {},
