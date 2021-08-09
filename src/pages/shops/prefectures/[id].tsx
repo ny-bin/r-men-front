@@ -57,13 +57,13 @@ const Shop: VFC = () => {
     });
   };
 
-  if (!loginUser) {
-    return (
-      <Layout title="shop-page">
-        <div>このページはログインしたユーザーのみ観覧できます</div>
-      </Layout>
-    );
-  }
+  // if (!loginUser) {
+  //   return (
+  //     <Layout title="shop-page">
+  //       <div>このページはログインしたユーザーのみ観覧できます</div>
+  //     </Layout>
+  //   );
+  // }
 
   console.log(data);
   return (
