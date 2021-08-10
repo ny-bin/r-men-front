@@ -4440,7 +4440,7 @@ export type GetShopsByPrefectureQuery = (
   { __typename?: 'query_root' }
   & { shops: Array<(
     { __typename?: 'shops' }
-    & Pick<Shops, 'id' | 'name' | 'description'>
+    & Pick<Shops, 'id' | 'prefecture_id' | 'name' | 'description'>
     & { shop_categories: Array<(
       { __typename?: 'shop_categories' }
       & { category: (
@@ -4998,6 +4998,7 @@ export const GetShopsByPrefectureDocument = gql`
     query GetShopsByPrefecture($prefecture_id: Int_comparison_exp = {}, $offset: Int, $limit: Int) {
   shops(where: {prefecture_id: $prefecture_id}, offset: $offset, limit: $limit) {
     id
+    prefecture_id
     name
     shop_categories {
       category {

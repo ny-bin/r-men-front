@@ -67,6 +67,7 @@ export const GET_SHOPS_BY_PREFECTURE = gql`
       limit: $limit
     ) {
       id
+      prefecture_id
       name
       shop_categories {
         category {
