@@ -17,7 +17,7 @@ export const cache: InMemoryCache = new InMemoryCache({
             return loginUserVar();
           },
         },
-        // shops: offsetLimitPagination(['prefecture_id']),
+        shops: offsetLimitPagination(['prefecture_id']),
         // shops: {
         //   ...offsetLimitPagination(['prefecture_id']),
         //   read(existing, { args: { offset, limit } }) {

@@ -4430,7 +4430,7 @@ export type GetShopsQuery = (
 );
 
 export type GetShopsByPrefectureQueryVariables = Exact<{
-  prefecture_id?: Maybe<IntComparisonExp>;
+  _eq?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 }>;
@@ -4995,8 +4995,8 @@ export type GetShopsQueryHookResult = ReturnType<typeof useGetShopsQuery>;
 export type GetShopsLazyQueryHookResult = ReturnType<typeof useGetShopsLazyQuery>;
 export type GetShopsQueryResult = ApolloReactCommon.QueryResult<GetShopsQuery, GetShopsQueryVariables>;
 export const GetShopsByPrefectureDocument = gql`
-    query GetShopsByPrefecture($prefecture_id: Int_comparison_exp = {}, $offset: Int, $limit: Int) {
-  shops(where: {prefecture_id: $prefecture_id}, offset: $offset, limit: $limit) {
+    query GetShopsByPrefecture($_eq: Int, $offset: Int, $limit: Int) {
+  shops(where: {prefecture: {id: {_eq: $_eq}}}, offset: $offset, limit: $limit) {
     id
     prefecture_id
     name
@@ -5034,7 +5034,7 @@ export const GetShopsByPrefectureDocument = gql`
  * @example
  * const { data, loading, error } = useGetShopsByPrefectureQuery({
  *   variables: {
- *      prefecture_id: // value for 'prefecture_id'
+ *      _eq: // value for '_eq'
  *      offset: // value for 'offset'
  *      limit: // value for 'limit'
  *   },
