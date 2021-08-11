@@ -2,6 +2,7 @@ import Head from 'next/head';
 import React from 'react';
 import Link from 'next/link';
 import { GetStaticProps } from 'next';
+import type { NextPage } from 'next';
 import { VFC } from 'react';
 
 import {
@@ -24,7 +25,7 @@ type Props = {
   areas: ApolloQueryResult<GetAreasJoinPrefecturesQuery>;
 };
 
-const Home: VFC<Props> = (props: Props) => {
+const Home: NextPage<Props> = (props: Props) => {
   // const categories = useGetCategoriesQuery();
   const categories = props.categories;
   const categoryNameList = categories.data;

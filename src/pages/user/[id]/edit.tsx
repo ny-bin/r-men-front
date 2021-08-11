@@ -1,6 +1,8 @@
 import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
 import { GetStaticProps } from 'next';
 import React, { VFC } from 'react';
+import type { NextPage } from 'next';
+
 import { addApolloState, initializeApollo } from '../../../apollo/apolloClient';
 import { GetUserDetailByIdQuery, GetUsersQuery } from '../../../apollo/graphql';
 import {
@@ -12,7 +14,7 @@ import { Layout } from 'src/components/Commons/Layout';
 import Image from 'next/image';
 import { loginUserVar } from 'src/apollo/cache';
 
-const Edit: VFC = () => {
+const Edit: NextPage = () => {
   //URLパスからidの取得
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
