@@ -37,7 +37,7 @@ const Shop: NextPage = () => {
       variables: {
         _eq: prefecture_id,
         offset: 0,
-        limit: 3,
+        limit: 10,
       },
       notifyOnNetworkStatusChange: true,
     });
