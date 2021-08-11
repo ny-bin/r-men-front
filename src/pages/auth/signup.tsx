@@ -6,8 +6,9 @@ import { loginUserVar } from 'src/apollo/cache';
 
 import { Layout } from '../../components/Commons/Layout';
 import { Register } from '../../components/Uncommons/Register';
+import type { NextPage } from 'next';
 
-const SignUp: VFC = () => {
+const SignUp: NextPage = () => {
   const loginUser = useReactiveVar(loginUserVar);
   const router = useRouter();
 

@@ -3,11 +3,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { VFC } from 'react';
 import { loginUserVar } from 'src/apollo/cache';
+import type { NextPage } from 'next';
 
 import { Layout } from '../../components/Commons/Layout';
 import { Login } from '../../components/Uncommons/Login';
 
-const SignIn: VFC = () => {
+const SignIn: NextPage = () => {
   const loginUser = useReactiveVar(loginUserVar);
   const router = useRouter();
 

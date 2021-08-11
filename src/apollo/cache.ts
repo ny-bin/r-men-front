@@ -17,20 +17,24 @@ export const cache: InMemoryCache = new InMemoryCache({
             return loginUserVar();
           },
         },
-        // shops: offsetLimitPagination(['prefecture_id']),
+        shops: offsetLimitPagination(['where']),
         // shops: {
-        //   ...offsetLimitPagination(['prefecture_id']),
-        //   read(existing, { args: { offset, limit } }) {
-        //     return existing && existing.slice(offset, offset + limit);
+        //   ...offsetLimitPagination(['where', 'limit', 'offset']),
+        //   read(existing, { args }) {
+        //     console.log(args);
+        //     return (
+        //       existing && existing.slice(args.offset, args.limit + args.offset)
+        //     );
         //   },
-        //   keyArgs: [],
-        //   merge(existing, incoming, { args: { offset = 0 } }) {
-        //     const merged = existing ? existing.slice(0) : [];
-        //     for (let i = 0; i < incoming.length; ++i) {
-        //       merged[offset + i] = incoming[i];
-        //     }
-        //     return merged;
-        //   },
+        // keyArgs: [],
+        // merge(existing, incoming, { args }) {
+        //   // console.log(args);
+        //   const merged = existing ? existing.slice(0) : [];
+        //   for (let i = 0; i < incoming.length; ++i) {
+        //     merged[args.offset + i] = incoming[i];
+        //   }
+        //   return merged;
+        // },
         // },
       },
     },

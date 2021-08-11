@@ -1,6 +1,8 @@
 import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
 import { GetStaticProps } from 'next';
 import React, { VFC } from 'react';
+import type { NextPage } from 'next';
+
 import { addApolloState, initializeApollo } from '../../apollo/apolloClient';
 import { GetShopsDetailByIdQuery, GetShopsQuery } from '../../apollo/graphql';
 import { useRouter } from 'next/router';

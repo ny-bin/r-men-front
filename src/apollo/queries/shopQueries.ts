@@ -56,13 +56,9 @@ export const GET_SHOPS = gql`
   }
 `;
 export const GET_SHOPS_BY_PREFECTURE = gql`
-  query GetShopsByPrefecture(
-    $prefecture_id: Int_comparison_exp = {}
-    $offset: Int
-    $limit: Int
-  ) {
+  query GetShopsByPrefecture($_eq: Int, $offset: Int, $limit: Int) {
     shops(
-      where: { prefecture_id: $prefecture_id }
+      where: { prefecture_id: { _eq: $_eq } }
       offset: $offset
       limit: $limit
     ) {
