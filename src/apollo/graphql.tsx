@@ -4996,7 +4996,7 @@ export type GetShopsLazyQueryHookResult = ReturnType<typeof useGetShopsLazyQuery
 export type GetShopsQueryResult = ApolloReactCommon.QueryResult<GetShopsQuery, GetShopsQueryVariables>;
 export const GetShopsByPrefectureDocument = gql`
     query GetShopsByPrefecture($_eq: Int, $offset: Int, $limit: Int) {
-  shops(where: {prefecture: {id: {_eq: $_eq}}}, offset: $offset, limit: $limit) {
+  shops(where: {prefecture_id: {_eq: $_eq}}, offset: $offset, limit: $limit) {
     id
     prefecture_id
     name

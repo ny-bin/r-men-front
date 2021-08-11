@@ -1,21 +1,23 @@
-import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
+import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
-import React, { useState, VFC } from 'react';
+import type { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import { addApolloState, initializeApollo } from '../../../apollo/apolloClient';
+import { NetworkStatus } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
+
+import { addApolloState, initializeApollo } from 'src/apollo/apolloClient';
+import { Layout } from 'src/components/Commons/Layout';
+import { loginUserVar } from 'src/apollo/cache';
 import {
   GetPrefecturesIdFirst5Query,
   GetShopsByPrefectureQuery,
-} from '../../../apollo/graphql';
-import { useRouter } from 'next/router';
-import { Layout } from 'src/components/Commons/Layout';
-import { loginUserVar } from 'src/apollo/cache';
+} from 'src/apollo/graphql';
 import { GET_SHOPS_BY_PREFECTURE } from 'src/apollo/queries/shopQueries';
 import { GET_PREFECTURES_ID_FIRST5 } from 'src/apollo/queries/prefectureQueries';
-import { NetworkStatus } from '@apollo/client';
 
-const Shop: VFC = () => {
+const Shop: NextPage = () => {
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
 
@@ -35,7 +37,7 @@ const Shop: VFC = () => {
       variables: {
         _eq: prefecture_id,
         offset: 0,
-        limit: 10,
+        limit: 3,
       },
       notifyOnNetworkStatusChange: true,
     });
@@ -45,15 +47,16 @@ const Shop: VFC = () => {
   if (error) return <>error...</>;
 
   const handleMoreFetch = async () => {
+    setOffset((offset) => {
+      return offset + 10;
+    });
+
     await fetchMore({
       variables: {
         _eq: prefecture_id,
         offset: offset,
         limit: 10,
       },
-    });
-    setOffset(() => {
-      return offset + 10;
     });
   };
 
@@ -78,7 +81,7 @@ const Shop: VFC = () => {
                 <div className="w-full max-w-2xlbg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 md:grid md:grid-cols-6">
                   <div className="col-span-2">
                     <Image
-                      src={'/noimage.jpg'}
+                      src={'/adpDSC_1749.jpg'}
                       width={100}
                       height={100}
                       alt="user's image of this page"
@@ -93,7 +96,12 @@ const Shop: VFC = () => {
       </div>
 
       <div className=""></div>
-      <button onClick={handleMoreFetch}>進む</button>
+      <div className="bg-white sm:w-1/3 w-2/3 h-auto mb-4 mx-auto">
+        <div className="w-full max-w-2xlbg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 md:grid md:grid-cols-6">
+          <div className="col-span-2"></div>
+          <button onClick={handleMoreFetch}>進む</button>
+        </div>
+      </div>
     </Layout>
   );
 };
