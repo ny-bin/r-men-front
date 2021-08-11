@@ -42,8 +42,8 @@ const Shop: NextPage = () => {
       notifyOnNetworkStatusChange: true,
     });
 
-  if (networkStatus === NetworkStatus.refetch) return <>Refetching!</>;
-  if (loading) return <>loading...</>;
+  // if (networkStatus === NetworkStatus.refetch) return <>Refetching!</>;
+  // if (loading) return <>loading...</>;
   if (error) return <>error...</>;
 
   const handleMoreFetch = async () => {
