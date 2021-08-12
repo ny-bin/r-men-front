@@ -40,7 +40,7 @@ const Shop: NextPage = () => {
         offset: limit,
         limit: 10,
       },
-      // notifyOnNetworkStatusChange: true,
+      notifyOnNetworkStatusChange: true,
     });
 
   // if (networkStatus === NetworkStatus.refetch) return <>Refetching!</>;
@@ -78,24 +78,31 @@ const Shop: NextPage = () => {
       <div className="pt-4 ">
         <ShopsByPrefecture
           data={data}
-          onLoadMore={() => {
-            const currentLength = limit;
-            // setLimit((limit) => {
-            //   return limit + 10;
-            // });
-            fetchMore({
-              variables: {
-                offset: currentLength,
-                limit: 10,
-              },
-            }).then((fetchMoreResult) => {
-              // Update variables.limit for the original query to include
-              // the newly added feed items.
+          onLoadMore={
+            //   () => {
+            //   const currentLength = limit;
+            //   // setLimit((limit) => {
+            //   //   return limit + 10;
+            //   // });
+            //   fetchMore({
+            //     variables: {
+            //       offset: currentLength,
+            //       limit: 10,
+            //     },
+            //   }).then((fetchMoreResult) => {
+            //     // Update variables.limit for the original query to include
+            //     // the newly added feed items.
+            //     setLimit((limit) => {
+            //       return limit + 10;
+            //     });
+            //   });
+            // }
+            () => {
               setLimit((limit) => {
                 return limit + 10;
               });
-            });
-          }}
+            }
+          }
         />
       </div>
       {limit !== 0 && (
