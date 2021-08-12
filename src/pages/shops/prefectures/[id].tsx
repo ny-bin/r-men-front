@@ -44,8 +44,6 @@ const Shop: NextPage = () => {
     });
 
   // if (networkStatus === NetworkStatus.refetch) return <>Refetching!</>;
-  if (loading) return <>loading...</>;
-  if (error) return <>error...</>;
 
   console.log(limit);
   // const handleMoreFetch = useCallback((e) => {
@@ -65,6 +63,18 @@ const Shop: NextPage = () => {
   //   });
   // }, []);
 
+  const handleMoreFetch = useCallback(() => {
+    setLimit((limit) => {
+      return limit + 10;
+    });
+  }, []);
+
+  const handleLessFetch = useCallback(() => {
+    setLimit((limit) => {
+      return limit - 10;
+    });
+  }, []);
+
   // if (!loginUser) {
   //   return (
   //     <Layout title="shop-page">
@@ -72,52 +82,48 @@ const Shop: NextPage = () => {
   //     </Layout>
   //   );
   // }
-
+  if (loading) return <>loading...</>;
+  if (error) return <>error...</>;
+  console.log(limit);
   return (
     <Layout title="shop-page">
       <div className="pt-4 ">
         <ShopsByPrefecture
           data={data}
-          onLoadMore={
-            //   () => {
-            //   const currentLength = limit;
-            //   // setLimit((limit) => {
-            //   //   return limit + 10;
-            //   // });
-            //   fetchMore({
-            //     variables: {
-            //       offset: currentLength,
-            //       limit: 10,
-            //     },
-            //   }).then((fetchMoreResult) => {
-            //     // Update variables.limit for the original query to include
-            //     // the newly added feed items.
-            //     setLimit((limit) => {
-            //       return limit + 10;
-            //     });
-            //   });
-            // }
-            () => {
-              setLimit((limit) => {
-                return limit + 10;
-              });
-            }
-          }
+          // onLoadMore={
+          //   //   () => {
+          //   //   const currentLength = limit;
+          //   //   // setLimit((limit) => {
+          //   //   //   return limit + 10;
+          //   //   // });
+          //   //   fetchMore({
+          //   //     variables: {
+          //   //       offset: currentLength,
+          //   //       limit: 10,
+          //   //     },
+          //   //   }).then((fetchMoreResult) => {
+          //   //     // Update variables.limit for the original query to include
+          //   //     // the newly added feed items.
+          //   //     setLimit((limit) => {
+          //   //       return limit + 10;
+          //   //     });
+          //   //   });
+          //   // }
+          //   handleClick
+          // }
         />
+      </div>
+      <div className="bg-white sm:w-1/3 w-2/3 h-auto mb-4 mx-auto">
+        <div className="w-full max-w-2xlbg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 md:grid md:grid-cols-6">
+          <div className="col-span-2"></div>
+          <button onClick={handleMoreFetch}>進む</button>
+        </div>
       </div>
       {limit !== 0 && (
         <div className="bg-white sm:w-1/3 w-2/3 h-auto mb-4 mx-auto">
           <div className="w-full max-w-2xlbg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 md:grid md:grid-cols-6">
             <div className="col-span-2"></div>
-            <button
-              onClick={() => {
-                setLimit((limit) => {
-                  return limit - 10;
-                });
-              }}
-            >
-              戻る
-            </button>
+            <button onClick={handleLessFetch}>戻る</button>
           </div>
         </div>
       )}
