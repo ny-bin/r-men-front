@@ -17,25 +17,29 @@ export const cache: InMemoryCache = new InMemoryCache({
             return loginUserVar();
           },
         },
-        shops: offsetLimitPagination(['where']),
-        // shops: {
-        //   ...offsetLimitPagination(['where', 'limit', 'offset']),
-        //   read(existing, { args }) {
-        //     console.log(args);
-        //     return (
-        //       existing && existing.slice(args.offset, args.limit + args.offset)
-        //     );
-        //   },
-        // keyArgs: [],
-        // merge(existing, incoming, { args }) {
-        //   // console.log(args);
-        //   const merged = existing ? existing.slice(0) : [];
-        //   for (let i = 0; i < incoming.length; ++i) {
-        //     merged[args.offset + i] = incoming[i];
-        //   }
-        //   return merged;
-        // },
-        // },
+        // shops: offsetLimitPagination(['where']),
+        shops: {
+          ...offsetLimitPagination(['where', 'limit', 'offset']),
+          read(existing: any, { args }) {
+            if (args?.offset !== undefined && args?.limit) {
+              return (
+                existing &&
+                existing.slice(args.offset, args.limit + args.offset)
+              );
+            } else {
+              return existing;
+            }
+          },
+          // keyArgs: [],
+          // merge(existing, incoming, { args }) {
+          //   // console.log(args);
+          //   const merged = existing ? existing.slice(0) : [];
+          //   for (let i = 0; i < incoming.length; ++i) {
+          //     merged[args.offset + i] = incoming[i];
+          //   }
+          //   return merged;
+          // },
+        },
       },
     },
   },
