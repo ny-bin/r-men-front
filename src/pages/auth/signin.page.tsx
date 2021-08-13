@@ -5,8 +5,9 @@ import { VFC } from 'react';
 import { loginUserVar } from 'src/apollo/cache';
 import type { NextPage } from 'next';
 
-import { Layout } from '../../components/Commons/Layout';
-import { Login } from '../../components/Uncommons/Login';
+import { Layout } from 'src/components/Layout/Layout';
+
+import { Login } from './Login';
 
 const SignIn: NextPage = () => {
   const loginUser = useReactiveVar(loginUserVar);

@@ -1,6 +1,6 @@
 import { ApolloError } from '@apollo/client';
 import React, { VFC } from 'react';
-import { GetAreasJoinPrefecturesQuery } from '../../apollo/graphql';
+import { GetAreasJoinPrefecturesQuery } from '../apollo/graphql';
 import Link from 'next/link';
 
 type Props = {

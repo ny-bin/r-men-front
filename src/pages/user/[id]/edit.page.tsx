@@ -10,7 +10,8 @@ import {
   GET_USER_DETAIL_BY_ID,
 } from '../../../apollo/queries/userQueries';
 import { useRouter } from 'next/router';
-import { Layout } from 'src/components/Commons/Layout';
+import { Layout } from 'src/components/Layout/Layout';
+
 import Image from 'next/image';
 import { loginUserVar } from 'src/apollo/cache';
 

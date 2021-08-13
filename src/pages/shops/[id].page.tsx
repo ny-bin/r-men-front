@@ -6,7 +6,7 @@ import type { NextPage } from 'next';
 import { addApolloState, initializeApollo } from '../../apollo/apolloClient';
 import { GetShopsDetailByIdQuery, GetShopsQuery } from '../../apollo/graphql';
 import { useRouter } from 'next/router';
-import { Layout } from 'src/components/Commons/Layout';
+import { Layout } from 'src/components/Layout/Layout';
 import { loginUserVar } from 'src/apollo/cache';
 import {
   GET_SHOPIDS,
