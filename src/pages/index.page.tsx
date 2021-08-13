@@ -32,6 +32,7 @@ const Home: NextPage<Props> = (props: Props) => {
   const categoryError = categories.error;
 
   const areas = props.areas;
+  console.log(props);
 
   if (categoryError) {
     return <div>categoryError:{categoryError.message}</div>;
