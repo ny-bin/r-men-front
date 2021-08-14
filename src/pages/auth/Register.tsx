@@ -37,10 +37,10 @@ export const Register: VFC = () => {
   }, []);
 
   const router = useRouter();
-  const provider = new firebase.auth.GoogleAuthProvider();
   const loginUser = useReactiveVar(loginUserVar);
 
   const handleGoogleAuth = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
     firebase
       .auth()
       .signInWithPopup(provider)
