@@ -8,7 +8,7 @@ import { NetworkStatus } from '@apollo/client';
 import { useQuery, useReactiveVar } from '@apollo/client';
 
 import { addApolloState, initializeApollo } from 'src/apollo/apolloClient';
-import { Layout } from 'src/components/Commons/Layout';
+import { Layout } from 'src/components/Layout/Layout';
 import { loginUserVar } from 'src/apollo/cache';
 import {
   GetPrefecturesIdFirst5Query,

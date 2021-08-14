@@ -1,6 +1,6 @@
 import Cookie from 'universal-cookie';
 import firebase from '../../firebaseConfig';
-import { unSubMeta } from '../pages/_app';
+import { unSubMeta } from '../pages/_app.page';
 
 const cookie = new Cookie();
 export const useLogout = () => {

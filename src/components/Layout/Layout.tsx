@@ -1,8 +1,8 @@
 import { ReactNode, VFC } from 'react';
 import Head from 'next/head';
 import React from 'react';
-import { Footer } from './Footer';
-import { Header } from './Header';
+import { Footer } from '../Commons/Footer';
+import { Header } from '../Commons/Header';
 
 interface Props {
   children: ReactNode;

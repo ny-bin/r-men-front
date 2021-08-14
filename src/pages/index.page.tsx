@@ -16,7 +16,7 @@ import { addApolloState, initializeApollo } from '../apollo/apolloClient';
 import { GET_CATEGORIES } from '../apollo/queries/categoryQueries';
 
 import { Footer } from '../components/Commons/Footer';
-import { AreaPrefecture } from '../components/Uncommons/AreaPrefecture';
+import { AreaPrefecture } from './AreaPrefecture';
 import { GET_AREAS_JOIN_PREFECTURES } from 'src/apollo/queries/areaQueries';
 import { ApolloQueryResult } from '@apollo/client';
 
@@ -32,6 +32,7 @@ const Home: NextPage<Props> = (props: Props) => {
   const categoryError = categories.error;
 
   const areas = props.areas;
+  console.log(props);
 
   if (categoryError) {
     return <div>categoryError:{categoryError.message}</div>;

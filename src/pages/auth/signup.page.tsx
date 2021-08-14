@@ -4,8 +4,8 @@ import React from 'react';
 import { VFC } from 'react';
 import { loginUserVar } from 'src/apollo/cache';
 
-import { Layout } from '../../components/Commons/Layout';
-import { Register } from '../../components/Uncommons/Register';
+import { Layout } from 'src/components/Layout/Layout';
+import { Register } from './Register';
 import type { NextPage } from 'next';
 
 const SignUp: NextPage = () => {
