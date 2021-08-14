@@ -1,7 +1,6 @@
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { VFC } from 'react';
 import { loginUserVar } from 'src/apollo/cache';
 import type { NextPage } from 'next';
 
@@ -14,7 +13,7 @@ const SignIn: NextPage = () => {
   const router = useRouter();
 
   if (loginUser) {
-    router.push(`../user/${loginUser.id}/edit`);
+    router.push(`../user/${loginUser.id}`);
   }
   return (
     <Layout title="signin">

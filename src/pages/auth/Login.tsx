@@ -1,75 +1,38 @@
-import { ChangeEvent, FormEvent, useCallback, useState, VFC } from 'react';
+import { VFC } from 'react';
 import React from 'react';
 import Link from 'next/link';
 import firebase from '../../../firebaseConfig';
-import { useLogout } from '../../hooks/useLogout';
-import { initializeApollo } from 'src/apollo/apolloClient';
-import { GetUserByIdQuery } from 'src/apollo/graphql';
-import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
-import { loginUserVar } from 'src/apollo/cache';
+import Image from 'next/image';
+import { useLoginAndRegister } from 'src/hooks/useAuth';
 
 export const Login: VFC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const emailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }, []);
-
-  const pwChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }, []);
-
-  const resetInput = useCallback(() => {
-    setEmail('');
-    setPassword('');
-  }, []);
-
-  const LoginAction = async (credential: firebase.auth.UserCredential) => {
-    const client = initializeApollo();
-    // console.log(client);
-    const user = credential.user;
-    console.log(user?.uid);
-    if (user) {
-      const { data } = await client.query<GetUserByIdQuery>({
-        query: GET_USER_BY_ID,
-        variables: {
-          id: user.uid,
-        },
-      });
-      // console.log(data);
-      loginUserVar(data.users_by_pk);
-    }
-  };
-
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //ログイン処理
-    try {
-      firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-        .then(() => {
-          firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((credential) => {
-              //user情報の保存
-              LoginAction(credential);
-            });
-        });
-    } catch (e) {
-      alert(e.message);
-    }
-    resetInput();
-  };
-
-  const user = firebase.auth().currentUser;
-  const { logout } = useLogout();
+  const {
+    handleGoogleAuth,
+    handleLogin,
+    emailChange,
+    pwChange,
+    password,
+    email,
+  } = useLoginAndRegister();
 
   return (
     <>
       <div className="w-full max-w-sm mx-auto">
+        <button className="mx-auto w-full" onClick={handleGoogleAuth}>
+          <div className="bg-yellow shadow-md rounded-lg px-4 pt-3 pb-3 mb-4">
+            <div className="flex space-x-4 items-center justify-center py-3 pl-4">
+              <Image
+                src="/Google__G__Logo.svg"
+                width={30}
+                height={30}
+                alt="google image"
+              />
+              <p className="text-sm font-bold text-center">
+                Googleアカウントでログイン
+              </p>
+            </div>
+          </div>
+        </button>
         <form
           onSubmit={handleLogin}
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
@@ -114,32 +77,15 @@ export const Login: VFC = () => {
               Login
             </button>
           </div>
-          <div className="text-center">
-            <Link href="/auth/signup">
-              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
-                アカウントをお持ちでない方はこちら
-              </a>
-            </Link>
-          </div>
         </form>
-      </div>
-
-      {user && (
-        <>
-          <Link href="/">
-            <div className="flex items-center cursor-pointer my-3">
-              <span>{user.displayName}</span>
-              <span>{user.uid}</span>
-            </div>
+        <div className="text-center">
+          <Link href="/auth/signup">
+            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
+              アカウントをお持ちでない方はこちら
+            </a>
           </Link>
-          <button
-            onClick={logout}
-            className="disabled:opacity-40 mt-5 py-1 px-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded focus:outline-none"
-          >
-            logout
-          </button>
-        </>
-      )}
+        </div>
+      </div>
     </>
   );
 };

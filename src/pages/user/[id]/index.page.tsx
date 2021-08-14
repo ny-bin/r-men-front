@@ -14,11 +14,13 @@ import { Layout } from 'src/components/Layout/Layout';
 
 import Image from 'next/image';
 import { loginUserVar } from 'src/apollo/cache';
+import { useLogout } from 'src/hooks/useLogout';
 
 const Edit: NextPage = () => {
   //URLパスからidの取得
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
+  const { logout } = useLogout();
 
   const { id } = router.query;
 
@@ -90,7 +92,16 @@ const Edit: NextPage = () => {
           コメント一覧
         </h1>
       </div>
-      )
+      {loginUser && (
+        <>
+          <button
+            onClick={logout}
+            className="disabled:opacity-40 mt-5 py-1 px-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded focus:outline-none"
+          >
+            logout
+          </button>
+        </>
+      )}
     </Layout>
   );
 };
