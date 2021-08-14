@@ -92,7 +92,6 @@ const Edit: NextPage = () => {
           コメント一覧
         </h1>
       </div>
-      )
       {loginUser && (
         <>
           <button
