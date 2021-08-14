@@ -9,8 +9,6 @@ import { initializeApollo } from 'src/apollo/apolloClient';
 import { GetUserByIdQuery } from 'src/apollo/graphql';
 import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 
-const provider = new firebase.auth.GoogleAuthProvider();
-
 export const Register: VFC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,6 +37,7 @@ export const Register: VFC = () => {
   }, []);
 
   const router = useRouter();
+  const provider = new firebase.auth.GoogleAuthProvider();
   const loginUser = useReactiveVar(loginUserVar);
 
   const handleGoogleAuth = () => {
