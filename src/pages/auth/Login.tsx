@@ -8,6 +8,47 @@ import { GetUserByIdQuery } from 'src/apollo/graphql';
 import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 import { loginUserVar } from 'src/apollo/cache';
 import router from 'next/router';
+import Image from 'next/image';
+
+const handleGoogleAuth = () => {
+  const client = initializeApollo();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase
+    .auth()
+    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(() => {
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(async (credential) => {
+          //登録後に編集ページへ遷移させる
+          const user = credential.user;
+          if (user) {
+            await client
+              .query<GetUserByIdQuery>({
+                query: GET_USER_BY_ID,
+                variables: {
+                  id: user.uid,
+                },
+              })
+              .then((result) => {
+                loginUserVar(result.data.users_by_pk);
+              });
+            router.push(`../user/${user.uid}`);
+          }
+        });
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+};
 
 export const Login: VFC = () => {
   const [email, setEmail] = useState('');
@@ -69,6 +110,21 @@ export const Login: VFC = () => {
   return (
     <>
       <div className="w-full max-w-sm mx-auto">
+        <button className="mx-auto w-full" onClick={handleGoogleAuth}>
+          <div className="bg-yellow shadow-md rounded-lg px-4 pt-3 pb-3 mb-4">
+            <div className="flex space-x-4 items-center justify-center py-3 pl-4">
+              <Image
+                src="/Google__G__Logo.svg"
+                width={30}
+                height={30}
+                alt="google image"
+              />
+              <p className="text-sm font-bold text-center">
+                Googleアカウントでログイン
+              </p>
+            </div>
+          </div>
+        </button>
         <form
           onSubmit={handleLogin}
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
@@ -113,32 +169,15 @@ export const Login: VFC = () => {
               Login
             </button>
           </div>
-          <div className="text-center">
-            <Link href="/auth/signup">
-              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
-                アカウントをお持ちでない方はこちら
-              </a>
-            </Link>
-          </div>
         </form>
-      </div>
-
-      {user && (
-        <>
-          <Link href="/">
-            <div className="flex items-center cursor-pointer my-3">
-              <span>{user.displayName}</span>
-              <span>{user.uid}</span>
-            </div>
+        <div className="text-center">
+          <Link href="/auth/signup">
+            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
+              アカウントをお持ちでない方はこちら
+            </a>
           </Link>
-          <button
-            onClick={logout}
-            className="disabled:opacity-40 mt-5 py-1 px-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded focus:outline-none"
-          >
-            logout
-          </button>
-        </>
-      )}
+        </div>
+      </div>
     </>
   );
 };

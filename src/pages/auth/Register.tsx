@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useState, VFC } from 'react';
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import firebase from '../../../firebaseConfig';
 import { useRouter } from 'next/router';
 import { useReactiveVar, gql } from '@apollo/client';
@@ -127,6 +128,22 @@ export const Register: VFC = () => {
   return (
     <>
       <div className="w-full max-w-sm mx-auto">
+        <button className="mx-auto w-full" onClick={handleGoogleAuth}>
+          <div className="bg-yellow shadow-md rounded-lg px-4 pt-3 pb-3 mb-4">
+            <div className="flex space-x-4 items-center justify-center py-3 pl-4">
+              <Image
+                src="/Google__G__Logo.svg"
+                width={30}
+                height={30}
+                alt="google image"
+              />
+              <p className="text-sm font-bold text-center">
+                Googleアカウントで登録
+              </p>
+            </div>
+          </div>
+        </button>
+
         <form
           onSubmit={handleRegister}
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
@@ -209,10 +226,6 @@ export const Register: VFC = () => {
               アカウントをお持ちの方はこちら
             </a>
           </Link>
-        </div>
-
-        <div>
-          <button onClick={handleGoogleAuth}>Googleで認証する</button>
         </div>
       </div>
     </>
