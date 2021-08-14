@@ -72,15 +72,17 @@ export const Register: VFC = () => {
         //     });
         // }
 
+        console.log('reload brefore');
         if (user?.uid && user?.displayName) {
-          console.log('uservar ok');
           const clientUserData: LoginUser = {
             id: user.uid,
             name: user.displayName,
           };
+          console.log('reloading');
           loginUserVar(clientUserData);
-          router.reload();
+          console.log('reload end');
         } else {
+          console.log('user nodefined');
           throw new Error();
         }
 
