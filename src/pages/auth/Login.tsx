@@ -7,6 +7,7 @@ import { initializeApollo } from 'src/apollo/apolloClient';
 import { GetUserByIdQuery } from 'src/apollo/graphql';
 import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 import { loginUserVar } from 'src/apollo/cache';
+import router from 'next/router';
 
 export const Login: VFC = () => {
   const [email, setEmail] = useState('');
@@ -27,9 +28,7 @@ export const Login: VFC = () => {
 
   const LoginAction = async (credential: firebase.auth.UserCredential) => {
     const client = initializeApollo();
-    // console.log(client);
     const user = credential.user;
-    console.log(user?.uid);
     if (user) {
       const { data } = await client.query<GetUserByIdQuery>({
         query: GET_USER_BY_ID,
@@ -37,7 +36,6 @@ export const Login: VFC = () => {
           id: user.uid,
         },
       });
-      // console.log(data);
       loginUserVar(data.users_by_pk);
     }
   };
@@ -56,6 +54,7 @@ export const Login: VFC = () => {
             .then((credential) => {
               //user情報の保存
               LoginAction(credential);
+              router.push(`../user/${credential.user?.uid}`);
             });
         });
     } catch (e) {

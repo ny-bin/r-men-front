@@ -16,17 +16,39 @@ import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 
 export let unSubMeta: () => void;
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
   const cookie = new Cookie();
   const HASURA_TOKEN_KEY = 'https://hasura.io/jwt/claims';
   const loginUser = useReactiveVar(loginUserVar);
   const client = useApollo(pageProps);
+  const user = firebase.auth().currentUser;
+
+  useEffect(() => {
+    const f = async () => {
+      // ここに全ページ共通で行う処理
+      await client
+        .query<GetUserByIdQuery, GetUserByIdQueryVariables>({
+          query: GET_USER_BY_ID,
+          variables: {
+            id: user?.uid,
+          },
+          fetchPolicy: 'network-only',
+        })
+        .then((getUser) => {
+          loginUserVar(getUser.data.users_by_pk);
+        });
+    };
+    if (user && !loginUser) {
+      f();
+    } else {
+    }
+  }, [router.pathname]);
 
   //userの状態が変更した場合に走る処理
   useEffect(() => {
     const unSubUser = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        // URLを直接更新するとリセットされるため呼んでおく;
+        // ログイン時はグローバルステートをセットするがログイン後にURLを直接更新するとリセットされるため呼んでおく
         if (loginUser === null) {
           await client
             .query<GetUserByIdQuery, GetUserByIdQueryVariables>({

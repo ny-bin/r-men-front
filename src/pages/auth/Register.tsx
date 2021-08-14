@@ -8,6 +8,7 @@ import { LoginUser, loginUserVar } from 'src/apollo/cache';
 import { initializeApollo } from 'src/apollo/apolloClient';
 import { GetUserByIdQuery } from 'src/apollo/graphql';
 import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
+import { useQuery } from '@apollo/client';
 
 export const Register: VFC = () => {
   const [email, setEmail] = useState('');
@@ -40,68 +41,32 @@ export const Register: VFC = () => {
   const loginUser = useReactiveVar(loginUserVar);
 
   const handleGoogleAuth = () => {
+    const client = initializeApollo();
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase
       .auth()
-      .signInWithPopup(provider)
-      .then(async (result) => {
-        const client = initializeApollo();
-        const credential = result.credential;
-        const user = result.user;
-        console.log(user);
-        // if (user) {
-        //   await client
-        //     .mutate({
-        //       variables: {
-        //         id: user.uid,
-        //         name: user.displayName || 'guest',
-        //       },
-        //       mutation: gql`
-        //         mutation createUser($id: String, $name: String) {
-        //           insert_users_one(object: { id: $id, name: $name }) {
-        //             id
-        //             name
-        //             created_at
-        //           }
-        //         }
-        //       `,
-        //     })
-        //     .then(async (resultData) => {
-        //       console.log(resultData.data?.insert_users_one.id);
-        //       loginUserVar(resultData.data?.insert_users_one.id);
-        //     });
-        // }
-
-        console.log('reload brefore');
-        if (user?.uid && user?.displayName) {
-          const clientUserData: LoginUser = {
-            id: user.uid,
-            name: user.displayName,
-          };
-          console.log('reloading');
-          loginUserVar(clientUserData);
-          console.log('reload end');
-        } else {
-          console.log('user nodefined');
-          throw new Error();
-        }
-
-        // if (user) {
-        //   const { data } = await client.query<GetUserByIdQuery>({
-        //     query: GET_USER_BY_ID,
-        //     variables: {
-        //       id: user.uid,
-        //     },
-        //   });
-        //   console.log(data);
-        //   // console.log(data);
-        //   loginUserVar(data.users_by_pk);
-        // }
-
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        // const token = credential?.accessToken;
-        // The signed-in user info.
-        // ...
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => {
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then(async (credential) => {
+            //登録後に編集ページへ遷移させる
+            const user = credential.user;
+            if (user) {
+              await client
+                .query<GetUserByIdQuery>({
+                  query: GET_USER_BY_ID,
+                  variables: {
+                    id: user.uid,
+                  },
+                })
+                .then((result) => {
+                  loginUserVar(result.data.users_by_pk);
+                });
+              router.push(`../user/${user.uid}`);
+            }
+          });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -121,7 +86,6 @@ export const Register: VFC = () => {
     let userId: string | undefined = '';
     //新規登録処理
     try {
-      const client = initializeApollo();
       firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -132,22 +96,29 @@ export const Register: VFC = () => {
             .then(async (credential) => {
               //登録後に編集ページへ遷移させる
               const user = credential.user;
+              //ユーザー情報の反映に少しラグがあるので時間をあける
+
               if (user) {
-                const { data } = await client.query<GetUserByIdQuery>({
-                  query: GET_USER_BY_ID,
-                  variables: {
-                    id: user.uid,
-                  },
-                });
-                // console.log(data);
-                loginUserVar(data.users_by_pk);
+                const client = initializeApollo();
+                await client
+                  .query<GetUserByIdQuery>({
+                    query: GET_USER_BY_ID,
+                    variables: {
+                      id: user.uid,
+                    },
+                  })
+                  .then(async (result) => {
+                    if (result.data.users_by_pk) {
+                      loginUserVar(result.data.users_by_pk);
+                      resetInput();
+                    }
+                  });
+                router.push(`../user/${user.uid}`);
               }
               //mutation入れてユーザーの名前を書き換える？
               // router.push(`/user/${userId}/edit`);
             });
         });
-      resetInput();
-      router.push('/');
     } catch (e) {
       alert(e.message);
     }
