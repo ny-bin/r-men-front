@@ -1,21 +1,10 @@
-import { ChangeEvent, FormEvent, useCallback, useState, VFC } from 'react';
+import { VFC } from 'react';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import firebase from '../../../firebaseConfig';
-import { useRouter } from 'next/router';
-import { useReactiveVar, gql } from '@apollo/client';
-import { LoginUser, loginUserVar } from 'src/apollo/cache';
-import { initializeApollo } from 'src/apollo/apolloClient';
-import { GetUserByIdQuery } from 'src/apollo/graphql';
-import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
-import { useQuery } from '@apollo/client';
 import { useLoginAndRegister } from 'src/hooks/useAuth';
 
 export const Register: VFC = () => {
-  const router = useRouter();
-  const loginUser = useReactiveVar(loginUserVar);
-
   const {
     handleGoogleAuth,
     handleRegister,

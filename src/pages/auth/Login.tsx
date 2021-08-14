@@ -1,13 +1,7 @@
-import { ChangeEvent, FormEvent, useCallback, useState, VFC } from 'react';
+import { VFC } from 'react';
 import React from 'react';
 import Link from 'next/link';
 import firebase from '../../../firebaseConfig';
-import { useLogout } from '../../hooks/useLogout';
-import { initializeApollo } from 'src/apollo/apolloClient';
-import { GetUserByIdQuery } from 'src/apollo/graphql';
-import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
-import { loginUserVar } from 'src/apollo/cache';
-import router from 'next/router';
 import Image from 'next/image';
 import { useLoginAndRegister } from 'src/hooks/useAuth';
 
@@ -20,9 +14,6 @@ export const Login: VFC = () => {
     password,
     email,
   } = useLoginAndRegister();
-
-  const user = firebase.auth().currentUser;
-  const { logout } = useLogout();
 
   return (
     <>
