@@ -3,8 +3,13 @@ import React from 'react';
 import Link from 'next/link';
 import firebase from '../../../firebaseConfig';
 import { useRouter } from 'next/router';
-import { useReactiveVar } from '@apollo/client';
-import { loginUserVar } from 'src/apollo/cache';
+import { useReactiveVar, gql } from '@apollo/client';
+import { LoginUser, loginUserVar } from 'src/apollo/cache';
+import { initializeApollo } from 'src/apollo/apolloClient';
+import { GetUserByIdQuery } from 'src/apollo/graphql';
+import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
+
+const provider = new firebase.auth.GoogleAuthProvider();
 
 export const Register: VFC = () => {
   const [email, setEmail] = useState('');
@@ -36,12 +41,87 @@ export const Register: VFC = () => {
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
 
+  const handleGoogleAuth = () => {
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(async (result) => {
+        const client = initializeApollo();
+        const credential = result.credential;
+        const user = result.user;
+        console.log(user);
+        // if (user) {
+        //   await client
+        //     .mutate({
+        //       variables: {
+        //         id: user.uid,
+        //         name: user.displayName || 'guest',
+        //       },
+        //       mutation: gql`
+        //         mutation createUser($id: String, $name: String) {
+        //           insert_users_one(object: { id: $id, name: $name }) {
+        //             id
+        //             name
+        //             created_at
+        //           }
+        //         }
+        //       `,
+        //     })
+        //     .then(async (resultData) => {
+        //       console.log(resultData.data?.insert_users_one.id);
+        //       loginUserVar(resultData.data?.insert_users_one.id);
+        //     });
+        // }
+
+        if (user?.uid && user?.displayName) {
+          console.log('uservar ok');
+          const clientUserData: LoginUser = {
+            id: user.uid,
+            name: user.displayName,
+          };
+          loginUserVar(clientUserData);
+          router.reload();
+          router.push('/');
+        } else {
+          throw new Error();
+        }
+
+        // if (user) {
+        //   const { data } = await client.query<GetUserByIdQuery>({
+        //     query: GET_USER_BY_ID,
+        //     variables: {
+        //       id: user.uid,
+        //     },
+        //   });
+        //   console.log(data);
+        //   // console.log(data);
+        //   loginUserVar(data.users_by_pk);
+        // }
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // const token = credential?.accessToken;
+        // The signed-in user info.
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+      });
+  };
+
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //ログイン処理
     let userId: string | undefined = '';
     //新規登録処理
     try {
+      const client = initializeApollo();
       firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -53,9 +133,15 @@ export const Register: VFC = () => {
               //登録後に編集ページへ遷移させる
               const user = credential.user;
               if (user) {
-                userId = user.uid;
+                const { data } = await client.query<GetUserByIdQuery>({
+                  query: GET_USER_BY_ID,
+                  variables: {
+                    id: user.uid,
+                  },
+                });
+                // console.log(data);
+                loginUserVar(data.users_by_pk);
               }
-
               //mutation入れてユーザーの名前を書き換える？
               // router.push(`/user/${userId}/edit`);
             });
@@ -145,14 +231,18 @@ export const Register: VFC = () => {
               Register
             </button>
           </div>
-          <div className="text-center">
-            <Link href="/auth/signin">
-              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
-                アカウントをお持ちの方はこちら
-              </a>
-            </Link>
-          </div>
         </form>
+        <div className="text-center">
+          <Link href="/auth/signin">
+            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 px-auto ">
+              アカウントをお持ちの方はこちら
+            </a>
+          </Link>
+        </div>
+
+        <div>
+          <button onClick={handleGoogleAuth}>Googleで認証する</button>
+        </div>
       </div>
     </>
   );
