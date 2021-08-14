@@ -60,13 +60,13 @@ const Shop: NextPage = () => {
     });
   };
 
-  // if (!loginUser) {
-  //   return (
-  //     <Layout title="shop-page">
-  //       <div>このページはログインしたユーザーのみ観覧できます</div>
-  //     </Layout>
-  //   );
-  // }
+  if (!loginUser) {
+    return (
+      <Layout title="shop-page">
+        <div>このページはログインしたユーザーのみ観覧できます</div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="shop-page">
