@@ -38,6 +38,7 @@ const Home: NextPage<Props> = (props: Props) => {
   return (
     <>
       <Head>
+        <link rel="icon" href="test.jpg" />
         <title>R-MEN</title>
         <meta
           name="description"

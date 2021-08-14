@@ -13,6 +13,7 @@ export const Layout: VFC<Props> = ({ children, title = 'R-MEN' }: Props) => {
   return (
     <div>
       <Head>
+        <link rel="icon" href="test.jpg" />
         <title>{title}</title>
         <meta
           name="description"
