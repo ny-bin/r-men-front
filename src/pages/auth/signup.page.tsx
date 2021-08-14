@@ -13,7 +13,7 @@ const SignUp: NextPage = () => {
   const router = useRouter();
 
   if (loginUser) {
-    router.push(`../user/${loginUser.id}/edit`);
+    router.push(`../user/${loginUser.id}`);
   }
 
   return (

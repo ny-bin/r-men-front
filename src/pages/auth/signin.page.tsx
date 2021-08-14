@@ -14,7 +14,7 @@ const SignIn: NextPage = () => {
   const router = useRouter();
 
   if (loginUser) {
-    router.push(`../user/${loginUser.id}/edit`);
+    router.push(`../user/${loginUser.id}`);
   }
   return (
     <Layout title="signin">
