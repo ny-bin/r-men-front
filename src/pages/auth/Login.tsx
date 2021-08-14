@@ -9,7 +9,7 @@ import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 import { loginUserVar } from 'src/apollo/cache';
 import router from 'next/router';
 import Image from 'next/image';
-import { useLoginAndRegister } from 'src/hooks/useGoogleAuth';
+import { useLoginAndRegister } from 'src/hooks/useAuth';
 
 export const Login: VFC = () => {
   const {

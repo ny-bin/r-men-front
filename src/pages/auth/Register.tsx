@@ -10,7 +10,7 @@ import { initializeApollo } from 'src/apollo/apolloClient';
 import { GetUserByIdQuery } from 'src/apollo/graphql';
 import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 import { useQuery } from '@apollo/client';
-import { useLoginAndRegister } from 'src/hooks/useGoogleAuth';
+import { useLoginAndRegister } from 'src/hooks/useAuth';
 
 export const Register: VFC = () => {
   const router = useRouter();
