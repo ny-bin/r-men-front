@@ -9,100 +9,17 @@ import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 import { loginUserVar } from 'src/apollo/cache';
 import router from 'next/router';
 import Image from 'next/image';
-
-const handleGoogleAuth = () => {
-  const client = initializeApollo();
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase
-    .auth()
-    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    .then(() => {
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(async (credential) => {
-          //登録後に編集ページへ遷移させる
-          const user = credential.user;
-          if (user) {
-            await client
-              .query<GetUserByIdQuery>({
-                query: GET_USER_BY_ID,
-                variables: {
-                  id: user.uid,
-                },
-              })
-              .then((result) => {
-                loginUserVar(result.data.users_by_pk);
-              });
-            router.push(`../user/${user.uid}`);
-          }
-        });
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
-};
+import { useLoginAndRegister } from 'src/hooks/useGoogleAuth';
 
 export const Login: VFC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const emailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }, []);
-
-  const pwChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }, []);
-
-  const resetInput = useCallback(() => {
-    setEmail('');
-    setPassword('');
-  }, []);
-
-  const LoginAction = async (credential: firebase.auth.UserCredential) => {
-    const client = initializeApollo();
-    const user = credential.user;
-    if (user) {
-      const { data } = await client.query<GetUserByIdQuery>({
-        query: GET_USER_BY_ID,
-        variables: {
-          id: user.uid,
-        },
-      });
-      loginUserVar(data.users_by_pk);
-    }
-  };
-
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //ログイン処理
-    try {
-      firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-        .then(() => {
-          firebase
-            .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then((credential) => {
-              //user情報の保存
-              LoginAction(credential);
-              router.push(`../user/${credential.user?.uid}`);
-            });
-        });
-    } catch (e) {
-      alert(e.message);
-    }
-    resetInput();
-  };
+  const {
+    handleGoogleAuth,
+    handleLogin,
+    emailChange,
+    pwChange,
+    password,
+    email,
+  } = useLoginAndRegister();
 
   const user = firebase.auth().currentUser;
   const { logout } = useLogout();

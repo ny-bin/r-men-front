@@ -10,120 +10,20 @@ import { initializeApollo } from 'src/apollo/apolloClient';
 import { GetUserByIdQuery } from 'src/apollo/graphql';
 import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 import { useQuery } from '@apollo/client';
+import { useLoginAndRegister } from 'src/hooks/useGoogleAuth';
 
 export const Register: VFC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userName, setUserName] = useState('');
-  const [passwordConf, setPasswordConf] = useState('');
-
-  const emailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }, []);
-
-  const pwChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }, []);
-
-  const nameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
-  }, []);
-
-  const pwConfChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPasswordConf(e.target.value);
-  }, []);
-
-  const resetInput = useCallback(() => {
-    setEmail('');
-    setPassword('');
-  }, []);
-
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
 
-  const handleGoogleAuth = () => {
-    const client = initializeApollo();
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
-      .auth()
-      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-      .then(() => {
-        firebase
-          .auth()
-          .signInWithPopup(provider)
-          .then(async (credential) => {
-            //登録後に編集ページへ遷移させる
-            const user = credential.user;
-            if (user) {
-              await client
-                .query<GetUserByIdQuery>({
-                  query: GET_USER_BY_ID,
-                  variables: {
-                    id: user.uid,
-                  },
-                })
-                .then((result) => {
-                  loginUserVar(result.data.users_by_pk);
-                });
-              router.push(`../user/${user.uid}`);
-            }
-          });
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-      });
-  };
-
-  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //ログイン処理
-    let userId: string | undefined = '';
-    //新規登録処理
-    try {
-      firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-        .then(() => {
-          firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(async (credential) => {
-              //登録後に編集ページへ遷移させる
-              const user = credential.user;
-              //ユーザー情報の反映に少しラグがあるので時間をあける
-
-              if (user) {
-                const client = initializeApollo();
-                await client
-                  .query<GetUserByIdQuery>({
-                    query: GET_USER_BY_ID,
-                    variables: {
-                      id: user.uid,
-                    },
-                  })
-                  .then(async (result) => {
-                    if (result.data.users_by_pk) {
-                      loginUserVar(result.data.users_by_pk);
-                      resetInput();
-                    }
-                  });
-                router.push(`../user/${user.uid}`);
-              }
-              //mutation入れてユーザーの名前を書き換える？
-              // router.push(`/user/${userId}/edit`);
-            });
-        });
-    } catch (e) {
-      alert(e.message);
-    }
-  };
+  const {
+    handleGoogleAuth,
+    handleRegister,
+    pwChange,
+    emailChange,
+    email,
+    password,
+  } = useLoginAndRegister();
 
   return (
     <>
@@ -148,22 +48,6 @@ export const Register: VFC = () => {
           onSubmit={handleRegister}
           className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
         >
-          <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
-              UserName<span className="text-red-600">(必須)</span>
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="userName"
-              type="UserName"
-              value={userName}
-              onChange={nameChange}
-            />
-          </div>
-
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -195,21 +79,6 @@ export const Register: VFC = () => {
             />
           </div>
 
-          <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
-              Password(確認)<span className="text-red-600">(必須)</span>
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="password"
-              type="password"
-              value={passwordConf}
-              onChange={pwConfChange}
-            />
-          </div>
           <div className="text-center pt-3">
             <button
               disabled={!email || !password}
