@@ -80,7 +80,6 @@ export const Register: VFC = () => {
           };
           loginUserVar(clientUserData);
           router.reload();
-          router.push('/');
         } else {
           throw new Error();
         }
