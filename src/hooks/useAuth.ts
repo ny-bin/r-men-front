@@ -39,8 +39,6 @@ export const useLoginAndRegister = () => {
             .then(async (credential) => {
               //登録後に編集ページへ遷移させる
               const user = credential.user;
-              //ユーザー情報の反映に少しラグがあるので時間をあける
-
               if (user) {
                 const client = initializeApollo();
                 await client
@@ -51,6 +49,7 @@ export const useLoginAndRegister = () => {
                     },
                   })
                   .then(async (result) => {
+                    //登録にラグがあるため別途ユーザ情報の取得が必要？
                     if (result.data.users_by_pk) {
                       loginUserVar(result.data.users_by_pk);
                       resetInput();
@@ -89,7 +88,10 @@ export const useLoginAndRegister = () => {
                   },
                 })
                 .then((result) => {
-                  loginUserVar(result.data.users_by_pk);
+                  //登録にラグがあるため別途ユーザ情報の取得が必要？
+                  if (result.data.users_by_pk) {
+                    loginUserVar(result.data.users_by_pk);
+                  }
                 });
               router.push(`../user/${user.uid}`);
             }

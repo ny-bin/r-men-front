@@ -23,9 +23,10 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
   const client = useApollo(pageProps);
   const user = firebase.auth().currentUser;
 
+  // 全ページ共通で行う処理
   useEffect(() => {
+    //非同期処理の定義
     const f = async () => {
-      // ここに全ページ共通で行う処理
       await client
         .query<GetUserByIdQuery, GetUserByIdQueryVariables>({
           query: GET_USER_BY_ID,
@@ -39,8 +40,10 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
         });
     };
     if (user && !loginUser) {
+      console.log('Tokenあり + ユーザー情報なしのためfetch中');
       f();
     } else {
+      console.log('認証情報あり');
     }
   }, [router.pathname]);
 
