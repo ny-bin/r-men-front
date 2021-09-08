@@ -1,4 +1,5 @@
 import { ReactNode, VFC } from 'react';
+import { CustomLayout } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { Footer } from '../Commons/Footer';
@@ -8,21 +9,13 @@ interface Props {
   children: ReactNode;
   title: string;
 }
-
-export const Layout: VFC<Props> = ({ children, title = 'R-MEN' }: Props) => {
+// { children, title = 'R-MEN' }: Props
+export const Layout: CustomLayout = (page) => {
   return (
     <div>
-      <Head>
-        <link rel="icon" href="test.jpg" />
-        <title>{title}</title>
-        <meta
-          name="description"
-          content="ラーメン専門の検索アプリです。各地域、カテゴリ、ランキング等で絞り込むことができます。"
-        />
-      </Head>
       <Header />
 
-      <main className="bg-yellow-100 h-auto">{children}</main>
+      <main className="bg-yellow-100 h-auto">{page}</main>
       <Footer />
     </div>
   );
