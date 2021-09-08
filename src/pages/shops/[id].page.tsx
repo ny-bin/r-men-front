@@ -1,7 +1,7 @@
-import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { GetStaticProps } from 'next';
-import React, { VFC } from 'react';
-import type { NextPage } from 'next';
+import React from 'react';
+import type { CustomNextPage } from 'next';
 
 import { addApolloState, initializeApollo } from '../../apollo/apolloClient';
 import { GetShopsDetailByIdQuery, GetShopsQuery } from '../../apollo/graphql';
@@ -13,7 +13,7 @@ import {
   GET_SHOPS_DETAIL_BY_ID,
 } from 'src/apollo/queries/shopQueries';
 
-const Shop: VFC = () => {
+const Shop: CustomNextPage = () => {
   //URLパスからidの取得
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
@@ -31,20 +31,14 @@ const Shop: VFC = () => {
   });
 
   if (!loginUser) {
-    return (
-      <Layout title="shop-page">
-        <div>このページはログインしたユーザーのみ観覧できます</div>
-      </Layout>
-    );
+    return <div>このページはログインしたユーザーのみ観覧できます</div>;
   }
 
   return (
-    <Layout title="shop-page">
-      <div>
-        {data?.shops_by_pk?.name}
-        {data?.shops_by_pk?.id}
-      </div>
-    </Layout>
+    <div>
+      {data?.shops_by_pk?.name}
+      {data?.shops_by_pk?.id}
+    </div>
   );
 };
 
@@ -77,4 +71,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 };
 
+Shop.getLayout = Layout;
 export default Shop;

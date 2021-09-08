@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import type { AppProps } from 'next/app';
+import type { CustomAppProps } from 'next/app';
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../apollo/apolloClient';
@@ -16,12 +16,19 @@ import { GET_USER_BY_ID } from 'src/apollo/queries/userQueries';
 
 export let unSubMeta: () => void;
 
-const MyApp = ({ Component, pageProps, router }: AppProps) => {
+const MyApp = ({ Component, pageProps, router }: CustomAppProps) => {
   const cookie = new Cookie();
   const HASURA_TOKEN_KEY = 'https://hasura.io/jwt/claims';
   const loginUser = useReactiveVar(loginUserVar);
   const client = useApollo(pageProps);
   const user = firebase.auth().currentUser;
+
+  //getLayoutの設定
+  const getLayout =
+    Component.getLayout ||
+    ((page) => {
+      return page;
+    });
 
   // 全ページ共通で行う処理
   useEffect(() => {
@@ -97,7 +104,8 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
+      {/* <Component {...pageProps} /> */}
     </ApolloProvider>
   );
 };

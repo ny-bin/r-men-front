@@ -2,13 +2,13 @@ import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { loginUserVar } from 'src/apollo/cache';
-import type { NextPage } from 'next';
+import type { CustomNextPage } from 'next';
 
 import { Layout } from 'src/components/Layout/Layout';
 
 import { Login } from './Login';
 
-const SignIn: NextPage = () => {
+const SignIn: CustomNextPage = () => {
   const loginUser = useReactiveVar(loginUserVar);
   const router = useRouter();
 
@@ -16,13 +16,14 @@ const SignIn: NextPage = () => {
     router.push(`../user/${loginUser.id}`);
   }
   return (
-    <Layout title="signin">
+    <>
       <h1 className="text-center text-lg font-semibold pt-8 pb-4 tracking-wider">
         ログイン
       </h1>
       <Login></Login>
-    </Layout>
+    </>
   );
 };
 
+SignIn.getLayout = Layout;
 export default SignIn;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
-import type { NextPage } from 'next';
+import type { CustomNextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -16,8 +16,9 @@ import {
 } from 'src/apollo/graphql';
 import { GET_SHOPS_BY_PREFECTURE } from 'src/apollo/queries/shopQueries';
 import { GET_PREFECTURES_ID_FIRST5 } from 'src/apollo/queries/prefectureQueries';
+import Head from 'next/head';
 
-const Shop: NextPage = () => {
+const Prefecture: CustomNextPage = () => {
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
 
@@ -62,14 +63,30 @@ const Shop: NextPage = () => {
 
   if (!loginUser) {
     return (
-      <Layout title="shop-page">
+      <>
+        <Head>
+          <link rel="icon" href="test.jpg" />
+          <title>shop-page</title>
+          <meta
+            name="shop-page"
+            content="ラーメン専門の検索アプリです。各地域、カテゴリ、ランキング等で絞り込むことができます。"
+          />
+        </Head>
         <div>このページはログインしたユーザーのみ観覧できます</div>
-      </Layout>
+      </>
     );
   }
 
   return (
-    <Layout title="shop-page">
+    <>
+      <Head>
+        <link rel="icon" href="test.jpg" />
+        <title>shop-page</title>
+        <meta
+          name="shop-page"
+          content="ラーメン専門の検索アプリです。各地域、カテゴリ、ランキング等で絞り込むことができます。"
+        />
+      </Head>
       <div className="pt-4 ">
         {data &&
           data?.shops?.map((shop) => {
@@ -102,7 +119,7 @@ const Shop: NextPage = () => {
           <button onClick={handleMoreFetch}>進む</button>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 
@@ -130,4 +147,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 };
 
-export default Shop;
+Prefecture.getLayout = Layout;
+export default Prefecture;

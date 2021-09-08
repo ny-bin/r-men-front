@@ -1,7 +1,7 @@
-import { useQuery, ApolloQueryResult, useReactiveVar } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { GetStaticProps } from 'next';
-import React, { VFC } from 'react';
-import type { NextPage } from 'next';
+import React from 'react';
+import type { CustomNextPage } from 'next';
 
 import { addApolloState, initializeApollo } from '../../../apollo/apolloClient';
 import { GetUserDetailByIdQuery, GetUsersQuery } from '../../../apollo/graphql';
@@ -15,8 +15,9 @@ import { Layout } from 'src/components/Layout/Layout';
 import Image from 'next/image';
 import { loginUserVar } from 'src/apollo/cache';
 import { useLogout } from 'src/hooks/useLogout';
+import Head from 'next/head';
 
-const Edit: NextPage = () => {
+const Edit: CustomNextPage = () => {
   //URLパスからidの取得
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
@@ -34,24 +35,40 @@ const Edit: NextPage = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  if (data?.users_by_pk?.id != loginUser?.id) {
+  if (!data?.users_by_pk) {
     return (
-      <Layout title="none-user">
-        <div>自分以外のユーザーの編集ページには遷移できません</div>
-      </Layout>
+      <>
+        <Head>
+          <link rel="icon" href="test.jpg" />
+          <title>No-User</title>
+          <meta
+            name="description"
+            content="ラーメン専門の検索アプリです。各地域、カテゴリ、ランキング等で絞り込むことができます。"
+          />
+        </Head>
+        <div>ユーザーは存在しません</div>
+      </>
     );
   }
 
-  // if (!data?.users_by_pk) {
+  // if (data?.users_by_pk?.id != loginUser?.id) {
   //   return (
-  //     <Layout title="none-user">
-  //       <div>該当のユーザーは存在しません</div>
-  //     </Layout>
+  //     <>
+  //       <Head>
+  //         <link rel="icon" href="test.jpg" />
+  //         <title>No-User</title>
+  //         <meta
+  //           name="description"
+  //           content="ラーメン専門の検索アプリです。各地域、カテゴリ、ランキング等で絞り込むことができます。"
+  //         />
+  //       </Head>
+  //       <div>自分以外のユーザーの編集ページには遷移できません</div>
+  //     </>
   //   );
   // }
 
   return (
-    <Layout title="user-page">
+    <>
       <div className="pt-20 py-5 text-center text-white mx-auto">
         <ul className="md:w-1/2 mx-auto">
           <li className="flex items-center justify-center">
@@ -102,7 +119,7 @@ const Edit: NextPage = () => {
           </button>
         </>
       )}
-    </Layout>
+    </>
   );
 };
 
@@ -135,4 +152,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 };
 
+Edit.getLayout = Layout;
 export default Edit;

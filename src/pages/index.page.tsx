@@ -1,16 +1,10 @@
 import Head from 'next/head';
 import React from 'react';
 import Link from 'next/link';
-import { GetStaticProps } from 'next';
-import type { NextPage } from 'next';
-import { VFC } from 'react';
-
+import { CustomNextPage, GetStaticProps } from 'next';
 import {
   GetAreasJoinPrefecturesQuery,
   GetCategoriesQuery,
-  useGetAreasJoinPrefecturesQuery,
-  useGetAreasQuery,
-  useGetCategoriesQuery,
 } from '../apollo/graphql';
 import { addApolloState, initializeApollo } from '../apollo/apolloClient';
 import { GET_CATEGORIES } from '../apollo/queries/categoryQueries';
@@ -25,7 +19,7 @@ type Props = {
   areas: ApolloQueryResult<GetAreasJoinPrefecturesQuery>;
 };
 
-const Home: NextPage<Props> = (props: Props) => {
+const Home: CustomNextPage<Props> = (props: Props) => {
   const categories = props.categories;
   const categoryNameList = categories.data;
   const categoryError = categories.error;

@@ -5,9 +5,9 @@ import { loginUserVar } from 'src/apollo/cache';
 
 import { Layout } from 'src/components/Layout/Layout';
 import { Register } from './Register';
-import type { NextPage } from 'next';
+import type { CustomNextPage } from 'next';
 
-const SignUp: NextPage = () => {
+const SignUp: CustomNextPage = () => {
   const loginUser = useReactiveVar(loginUserVar);
   const router = useRouter();
 
@@ -16,13 +16,14 @@ const SignUp: NextPage = () => {
   }
 
   return (
-    <Layout title="Home">
+    <>
       <h1 className="text-center text-lg font-semibold pt-8 pb-4 tracking-wider">
         新規会員登録
       </h1>
       <Register></Register>
-    </Layout>
+    </>
   );
 };
 
+SignUp.getLayout = Layout;
 export default SignUp;
