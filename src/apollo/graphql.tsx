@@ -4500,8 +4500,6 @@ export type GetUserByIdQuery = (
 
 export type GetUserDetailByIdQueryVariables = Exact<{
   id?: Maybe<Scalars['String']>;
-  user_id?: Maybe<StringComparisonExp>;
-  user_id1?: Maybe<StringComparisonExp>;
 }>;
 
 
@@ -4509,13 +4507,20 @@ export type GetUserDetailByIdQuery = (
   { __typename?: 'query_root' }
   & { users_by_pk?: Maybe<(
     { __typename?: 'users' }
-    & Pick<Users, 'id' | 'name' | 'prefecture_id' | 'img_url' | 'self_pr'>
-    & { likes: Array<(
-      { __typename?: 'likes' }
-      & Pick<Likes, 'shop_id'>
-    )>, shop_comments: Array<(
+    & Pick<Users, 'img_url' | 'name' | 'self_pr'>
+    & { shop_comments: Array<(
       { __typename?: 'shop_comments' }
-      & Pick<ShopComments, 'shop_id' | 'content'>
+      & Pick<ShopComments, 'updated_at' | 'content'>
+      & { shop: (
+        { __typename?: 'shops' }
+        & Pick<Shops, 'name'>
+      ) }
+    )>, likes: Array<(
+      { __typename?: 'likes' }
+      & { shop: (
+        { __typename?: 'shops' }
+        & Pick<Shops, 'name'>
+      ) }
     )> }
   )> }
 );
@@ -5158,19 +5163,22 @@ export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
 export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
 export type GetUserByIdQueryResult = ApolloReactCommon.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
 export const GetUserDetailByIdDocument = gql`
-    query GetUserDetailById($id: String = "", $user_id: String_comparison_exp = {}, $user_id1: String_comparison_exp = {}) {
+    query GetUserDetailById($id: String = "") {
   users_by_pk(id: $id) {
-    id
-    name
-    prefecture_id
     img_url
+    name
     self_pr
-    likes(where: {user_id: $user_id1}) {
-      shop_id
-    }
-    shop_comments(where: {user_id: $user_id}) {
-      shop_id
+    shop_comments(where: {user_id: {_eq: $id}}, limit: 5) {
+      updated_at
       content
+      shop {
+        name
+      }
+    }
+    likes(where: {user_id: {_eq: $id}}) {
+      shop {
+        name
+      }
     }
   }
 }
@@ -5189,8 +5197,6 @@ export const GetUserDetailByIdDocument = gql`
  * const { data, loading, error } = useGetUserDetailByIdQuery({
  *   variables: {
  *      id: // value for 'id'
- *      user_id: // value for 'user_id'
- *      user_id1: // value for 'user_id1'
  *   },
  * });
  */

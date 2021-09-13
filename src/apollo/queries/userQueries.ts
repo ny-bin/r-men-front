@@ -28,23 +28,22 @@ export const GET_USER_BY_ID = gql`
 `;
 
 export const GET_USER_DETAIL_BY_ID = gql`
-  query GetUserDetailById(
-    $id: String = ""
-    $user_id: String_comparison_exp = {}
-    $user_id1: String_comparison_exp = {}
-  ) {
+  query GetUserDetailById($id: String = "") {
     users_by_pk(id: $id) {
-      id
-      name
-      prefecture_id
       img_url
+      name
       self_pr
-      likes(where: { user_id: $user_id1 }) {
-        shop_id
-      }
-      shop_comments(where: { user_id: $user_id }) {
-        shop_id
+      shop_comments(where: { user_id: { _eq: $id } }, limit: 5) {
+        updated_at
         content
+        shop {
+          name
+        }
+      }
+      likes(where: { user_id: { _eq: $id } }) {
+        shop {
+          name
+        }
       }
     }
   }
