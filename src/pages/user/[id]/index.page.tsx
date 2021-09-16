@@ -16,8 +16,9 @@ import Image from 'next/image';
 import { loginUserVar } from 'src/apollo/cache';
 import { useLogout } from 'src/hooks/useLogout';
 import Head from 'next/head';
+import Shop from 'src/pages/shops/[id].page';
 
-const Edit: CustomNextPage = () => {
+const UserPage: CustomNextPage = () => {
   //URLパスからidの取得
   const router = useRouter();
   const loginUser = useReactiveVar(loginUserVar);
@@ -34,6 +35,7 @@ const Edit: CustomNextPage = () => {
     variables: { id: id },
     notifyOnNetworkStatusChange: true,
   });
+  console.log(data);
 
   if (!data?.users_by_pk) {
     return (
@@ -66,14 +68,13 @@ const Edit: CustomNextPage = () => {
   //     </>
   //   );
   // }
-
   return (
     <>
       <div className="pt-20 py-5 text-center text-white mx-auto">
         <ul className="md:w-1/2 mx-auto">
           <li className="flex items-center justify-center">
             <Image
-              src={'/' + data?.users_by_pk?.img_url ?? '/noimage.jpg'}
+              src={'/noimage.jpg'}
               width={200}
               height={200}
               alt="user's image of this page"
@@ -84,40 +85,70 @@ const Edit: CustomNextPage = () => {
           <li className=" text-2xl font-italic text-center text-black">
             {data?.users_by_pk?.name}
           </li>
+
+          <li>
+            {/* bg-white shadow-md */}
+            <div className="w-full max-w-2xl mx-auto rounded-lg px-8 pt-6 pb-8 mt-8">
+              <p className="text-xm font-italic text-center text-black">
+                {' '}
+                {data?.users_by_pk?.self_pr ?? 'prはまだありません'}
+              </p>
+            </div>
+          </li>
         </ul>
       </div>
-      <div className="grid grid-cols-6 gap-4">
-        <div className="col-start-2 col-span-4 ..."></div>
-        <div className="col-start-1 col-end-3 ..."></div>
-        <div className="col-end-7 col-span-2 ..."></div>
-        <div className="col-start-1 col-end-7 ..."></div>
-      </div>
-      <div className="w-full max-w-2xl mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 grid md:grid-cols-3">
+
+      {/* <div className="w-full max-w-2xl mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 grid md:grid-cols-3">
         <div className="py-8">
           <p>評価したお店数:</p>
-          <p>フォロー:</p>
-          <p> フォロワー: </p>
           <p> r-men通ランキング: </p>
         </div>
-
-        <div className="col-span-2 py-8">
-          {data?.users_by_pk?.self_pr ?? 'prはまだありません'}
-        </div>
-      </div>
+      </div> */}
       <div className="container mx-auto py-10">
-        <h1 className="mx-auto text-3xl text-center font-serif font-light">
+        <h1 className="mx-auto text-3xl text-center font-serif font-light pb-4">
           コメント一覧
         </h1>
+
+        <div className="bg-white w-2/3 h-auto mb-4 mx-auto">
+          {data?.users_by_pk.shop_comments.map((comment) => {
+            return (
+              <div key={comment.shop.name}>
+                <div className="w-full max-w-2xl rounded-lg px-8 pt-6 pb-8 mb-4 ">
+                  {comment.shop.name} : {comment.content}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      {loginUser && (
-        <>
+
+      <div className="container mx-auto py-10">
+        <h1 className="mx-auto text-3xl text-center font-serif font-light pb-4">
+          お気に入り店舗一覧
+        </h1>
+
+        <div className="bg-white w-2/3 h-auto mb-4 mx-auto">
+          {data?.users_by_pk.likes.map((likeShop) => {
+            return (
+              <div key={likeShop.shop.name}>
+                <div className="w-full max-w-2xl rounded-lg px-4 pt-2 pb-2 mb-2">
+                  {likeShop.shop.name}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {loginUser && loginUser.id == data?.users_by_pk.id && (
+        <div className="container">
           <button
             onClick={logout}
-            className="disabled:opacity-40 mt-5 py-1 px-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded focus:outline-none"
+            className="px-auto disabled:opacity-40 mt-5 py-1 px-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded focus:outline-none"
           >
             logout
           </button>
-        </>
+        </div>
       )}
     </>
   );
@@ -152,5 +183,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 };
 
-Edit.getLayout = Layout;
-export default Edit;
+UserPage.getLayout = Layout;
+export default UserPage;

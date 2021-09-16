@@ -4507,7 +4507,7 @@ export type GetUserDetailByIdQuery = (
   { __typename?: 'query_root' }
   & { users_by_pk?: Maybe<(
     { __typename?: 'users' }
-    & Pick<Users, 'img_url' | 'name' | 'self_pr'>
+    & Pick<Users, 'id' | 'img_url' | 'name' | 'self_pr'>
     & { shop_comments: Array<(
       { __typename?: 'shop_comments' }
       & Pick<ShopComments, 'updated_at' | 'content'>
@@ -5165,6 +5165,7 @@ export type GetUserByIdQueryResult = ApolloReactCommon.QueryResult<GetUserByIdQu
 export const GetUserDetailByIdDocument = gql`
     query GetUserDetailById($id: String = "") {
   users_by_pk(id: $id) {
+    id
     img_url
     name
     self_pr

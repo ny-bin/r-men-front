@@ -30,6 +30,7 @@ export const GET_USER_BY_ID = gql`
 export const GET_USER_DETAIL_BY_ID = gql`
   query GetUserDetailById($id: String = "") {
     users_by_pk(id: $id) {
+      id
       img_url
       name
       self_pr
